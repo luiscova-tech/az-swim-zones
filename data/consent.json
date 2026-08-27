@@ -1,0 +1,5 @@
+{
+  "_readme": "Consent records, keyed by swimmer key. A swimmer with NO record here is treated as 'initial' (shown as 'Ana L.'), never as 'full'. Records are only ever added from a parent/guardian's own submission via the consent form — never inferred, never bulk-set. Levels: 'excluded' (removed from every page, count and image), 'initial' (default), 'full' (full name on the board), 'full-with-announcements' (full name plus use in announcements). Note that 'full' does NOT imply announcement permission; a parent must choose that separately.",
+  "_levels": ["excluded", "initial", "full", "full-with-announcements"],
+  "consent": {}
+}
