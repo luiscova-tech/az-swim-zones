@@ -59,6 +59,27 @@ export function ageAt(dob: Date, asOf: Date): number {
   return age;
 }
 
+/** First day of the month containing `date`. */
+export function firstDayOfMonth(date: Date): Date {
+  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1));
+}
+
+/**
+ * Last day of the month containing `date`. Day 0 of the *next* month is the
+ * last day of this one, which handles February and leap years for free.
+ */
+export function lastDayOfMonth(date: Date): Date {
+  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 0));
+}
+
+/** Parse a "YYYY-MM" month string into its first day, as a UTC Date. */
+export function parseISOMonth(iso: string): Date {
+  if (!/^\d{4}-\d{2}$/.test(iso.trim())) {
+    throw new Error(`Invalid ISO month: "${iso}" (expected YYYY-MM)`);
+  }
+  return parseISODate(`${iso.trim()}-01`);
+}
+
 /** true if a is strictly before b (UTC calendar-date comparison). */
 export function isBefore(a: Date, b: Date): boolean {
   return a.getTime() < b.getTime();
