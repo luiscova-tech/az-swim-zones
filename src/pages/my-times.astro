@@ -1,0 +1,364 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../lib/url";
+---
+
+<BaseLayout
+  title="My Times"
+  description="Track your swimmer's times against every AAA standard. Everything stays on your own device — nothing is uploaded or published."
+>
+  <h1 class="page-title">My Times</h1>
+  <p class="page-subtitle">
+    Add your swimmer's best times and see every AAA cut they've hit — and how close the rest are.
+  </p>
+
+  <div class="card callout">
+    <p style="margin:0">
+      🔒 <strong>This stays on your device.</strong> Times you add here are saved in this browser
+      only. Nothing is uploaded, nothing is published, and no one else can see it — not even us.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="field-row cols-2">
+      <div class="field">
+        <label for="mt-age">Age on the meet's first day</label>
+        <input id="mt-age" type="number" inputmode="numeric" min="5" max="18" value="12" />
+      </div>
+      <div class="field">
+        <label for="mt-gender">Gender</label>
+        <select id="mt-gender">
+          <option value="F">Girls</option>
+          <option value="M">Boys</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div id="mt-status" class="result" data-state="idle" aria-live="polite">
+    <p class="result-headline" id="mt-status-headline">Add a time to get started.</p>
+    <p class="result-detail" id="mt-status-detail"></p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-heading">Add a time</h2>
+    <form id="mt-form" autocomplete="off">
+      <div class="field">
+        <label for="mt-event">Event</label>
+        <select id="mt-event"></select>
+      </div>
+      <div class="field-row cols-2">
+        <div class="field">
+          <label for="mt-course">Course</label>
+          <select id="mt-course">
+            <option value="SCY">SCY (yards)</option>
+            <option value="LCM">LCM (long course meters)</option>
+            <option value="SCM">SCM (short course meters)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="mt-time">Time</label>
+          <input id="mt-time" type="text" inputmode="decimal" placeholder="e.g. 1:03.45" />
+        </div>
+      </div>
+      <button type="submit" class="button-primary" id="mt-add">Add time</button>
+      <p class="note" id="mt-error" hidden></p>
+    </form>
+  </div>
+
+  <div class="card" id="mt-list-card" hidden>
+    <h2 class="card-heading">Your times</h2>
+    <div class="table-scroll">
+      <table class="std-table">
+        <thead>
+          <tr>
+            <th scope="col">Event</th>
+            <th scope="col">Time</th>
+            <th scope="col">AAA cut</th>
+            <th scope="col">Gap</th>
+            <th scope="col"><span class="visually-hidden">Remove</span></th>
+          </tr>
+        </thead>
+        <tbody id="mt-tbody"></tbody>
+      </table>
+    </div>
+    <p class="note" style="margin-top:1rem; margin-bottom:0">
+      Times are checked against the standards for the age you set above. If your swimmer ages up
+      before the meet, change the age and the whole table re-checks against their new age group.
+    </p>
+  </div>
+
+  <p class="page-subtitle" style="margin-top:1.5rem; font-size:0.85rem;">
+    Being eligible is not the same as being selected — only your LSC picks the team.
+    <a href={withBase("/faq")}>What happens next →</a>
+  </p>
+</BaseLayout>
+
+<script>
+  import standardsData from "../../data/standards.json";
+  import { ageGroupForAge, type AgeGroup } from "../../scripts/lib/ageGroup";
+  import { parseTime, formatTime } from "../../scripts/lib/time";
+  import { compareToStandard, getStandardSeconds, type Course, type Gender, type StandardsData } from "../../scripts/lib/standards";
+
+  const standards = standardsData as unknown as StandardsData;
+  const STORAGE_KEY = "road-to-zones:my-times:v1";
+
+  interface StoredEntry {
+    eventKey: string;
+    course: Course;
+    seconds: number;
+  }
+  interface StoredState {
+    age: number;
+    gender: Gender;
+    entries: StoredEntry[];
+  }
+
+  const ageInput = document.getElementById("mt-age") as HTMLInputElement;
+  const genderSelect = document.getElementById("mt-gender") as HTMLSelectElement;
+  const eventSelect = document.getElementById("mt-event") as HTMLSelectElement;
+  const courseSelect = document.getElementById("mt-course") as HTMLSelectElement;
+  const timeInput = document.getElementById("mt-time") as HTMLInputElement;
+  const form = document.getElementById("mt-form") as HTMLFormElement;
+  const errorEl = document.getElementById("mt-error") as HTMLParagraphElement;
+  const listCard = document.getElementById("mt-list-card") as HTMLDivElement;
+  const tbody = document.getElementById("mt-tbody") as HTMLTableSectionElement;
+  const statusEl = document.getElementById("mt-status") as HTMLDivElement;
+  const statusHeadline = document.getElementById("mt-status-headline") as HTMLParagraphElement;
+  const statusDetail = document.getElementById("mt-status-detail") as HTMLParagraphElement;
+
+  // Every storage access is wrapped: private-browsing modes and blocked-cookie
+  // settings can throw on read OR write, and the page must still work fully.
+  function loadState(): StoredState {
+    const fallback: StoredState = { age: 12, gender: "F", entries: [] };
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return fallback;
+      const parsed = JSON.parse(raw) as StoredState;
+      if (!parsed || !Array.isArray(parsed.entries)) return fallback;
+      return {
+        age: typeof parsed.age === "number" ? parsed.age : 12,
+        gender: parsed.gender === "M" ? "M" : "F",
+        entries: parsed.entries.filter(
+          (e) => e && typeof e.eventKey === "string" && typeof e.seconds === "number"
+        ),
+      };
+    } catch {
+      return fallback;
+    }
+  }
+
+  function saveState(state: StoredState) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch {
+      // Storage unavailable (private mode, blocked cookies, quota). The page
+      // keeps working for this session; we just can't persist.
+    }
+  }
+
+  let state = loadState();
+  ageInput.value = String(state.age);
+  genderSelect.value = state.gender;
+
+  function currentAgeGroup(): AgeGroup | null {
+    const age = Number(ageInput.value);
+    if (!Number.isFinite(age) || age < 0) return null;
+    return ageGroupForAge(Math.floor(age));
+  }
+
+  let lastEventListKey = "";
+  function populateEvents() {
+    const ageGroup = currentAgeGroup();
+    const course = courseSelect.value as Course;
+    if (!ageGroup) return;
+    const key = `${ageGroup}|${course}`;
+    if (key === lastEventListKey) return;
+    lastEventListKey = key;
+
+    const previous = eventSelect.value;
+    eventSelect.innerHTML = "";
+    for (const event of standards.ageGroups[ageGroup].events) {
+      const option = document.createElement("option");
+      option.value = event.key;
+      option.textContent = event.displayName[course];
+      eventSelect.appendChild(option);
+    }
+    if ([...eventSelect.options].some((o) => o.value === previous)) {
+      eventSelect.value = previous;
+    }
+  }
+
+  function showError(message: string) {
+    errorEl.textContent = message;
+    errorEl.hidden = false;
+  }
+
+  function render() {
+    const ageGroup = currentAgeGroup();
+    const gender = genderSelect.value as Gender;
+    const age = Number(ageInput.value);
+
+    populateEvents();
+    tbody.innerHTML = "";
+    listCard.hidden = state.entries.length === 0;
+
+    if (age >= 15) {
+      // Hide the table rather than showing an empty one -- the standards are
+      // age-group scoped, so there's nothing meaningful to compare against.
+      // The entries stay in storage and come back if the age is changed.
+      listCard.hidden = true;
+      statusEl.dataset.state = "ineligible";
+      statusHeadline.textContent = "Not age-eligible for Zones";
+      statusDetail.textContent =
+        "Zones is for swimmers 14 and under on the meet's first day. Your times are still saved — change the age back and they'll reappear.";
+      return;
+    }
+    if (!ageGroup) {
+      statusEl.dataset.state = "idle";
+      statusHeadline.textContent = "Set an age to get started.";
+      statusDetail.textContent = "";
+      return;
+    }
+
+    let aaaCount = 0;
+    let closestGap: { gap: number; label: string } | null = null;
+
+    state.entries.forEach((entry, index) => {
+      const standardSeconds = getStandardSeconds(standards, ageGroup, entry.eventKey, entry.course, gender);
+      const eventEntry = standards.ageGroups[ageGroup].events.find((e) => e.key === entry.eventKey);
+
+      const row = document.createElement("tr");
+      const nameCell = document.createElement("th");
+      nameCell.scope = "row";
+
+      if (!eventEntry || standardSeconds === undefined) {
+        // The event isn't offered in this age group -- happens when a swimmer
+        // ages up and an event they'd logged no longer exists for them.
+        nameCell.textContent = entry.eventKey;
+        row.appendChild(nameCell);
+        const timeCell = document.createElement("td");
+        timeCell.textContent = formatTime(entry.seconds);
+        row.appendChild(timeCell);
+        const note = document.createElement("td");
+        note.colSpan = 2;
+        note.className = "muted-cell";
+        note.textContent = "not offered at this age";
+        row.appendChild(note);
+        row.appendChild(removeCell(index));
+        tbody.appendChild(row);
+        return;
+      }
+
+      const comparison = compareToStandard(entry.seconds, standardSeconds);
+      if (comparison.isAAA) aaaCount++;
+      else if (closestGap === null || comparison.gapSeconds < closestGap.gap) {
+        closestGap = { gap: comparison.gapSeconds, label: eventEntry.displayName[entry.course] };
+      }
+
+      nameCell.textContent = `${eventEntry.displayName[entry.course]} (${entry.course})`;
+      row.appendChild(nameCell);
+
+      const timeCell = document.createElement("td");
+      timeCell.textContent = formatTime(entry.seconds);
+      row.appendChild(timeCell);
+
+      const cutCell = document.createElement("td");
+      cutCell.textContent = formatTime(standardSeconds);
+      row.appendChild(cutCell);
+
+      const gapCell = document.createElement("td");
+      if (comparison.isAAA) {
+        gapCell.innerHTML = `<span class="tag tag-aaa">AAA ✓</span>`;
+      } else {
+        gapCell.textContent = `+${formatTime(comparison.gapSeconds)}`;
+        gapCell.className = "muted-cell";
+      }
+      row.appendChild(gapCell);
+      row.appendChild(removeCell(index));
+      tbody.appendChild(row);
+    });
+
+    if (aaaCount > 0) {
+      statusEl.dataset.state = "aaa";
+      statusHeadline.textContent =
+        aaaCount === 1 ? "🎉 That's a Zones-qualifying time!" : `🎉 ${aaaCount} Zones-qualifying times!`;
+      statusDetail.textContent = `One AAA time is all it takes to be eligible for the ${ageGroup} age group. Talk to your coach about Zones.`;
+    } else if (closestGap !== null) {
+      const closest = closestGap as { gap: number; label: string };
+      statusEl.dataset.state = "chasing";
+      statusHeadline.textContent = `${formatTime(closest.gap)} away`;
+      statusDetail.textContent = `Closest event: ${closest.label}. That's the one to chase.`;
+    } else {
+      statusEl.dataset.state = "idle";
+      statusHeadline.textContent = "Add a time to get started.";
+      statusDetail.textContent = "";
+    }
+  }
+
+  function removeCell(index: number): HTMLTableCellElement {
+    const cell = document.createElement("td");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "link-button";
+    button.textContent = "Remove";
+    button.addEventListener("click", () => {
+      state.entries.splice(index, 1);
+      saveState(state);
+      render();
+    });
+    cell.appendChild(button);
+    return cell;
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    errorEl.hidden = true;
+
+    const raw = timeInput.value.trim();
+    if (!raw) {
+      showError("Enter a time first.");
+      return;
+    }
+
+    let seconds: number | null;
+    try {
+      seconds = parseTime(raw);
+    } catch {
+      showError("That doesn't look like a time. Try 29.59 or 1:03.45.");
+      return;
+    }
+    if (seconds === null) {
+      showError("DQ, NS and SCR aren't times — there's nothing to compare yet.");
+      return;
+    }
+
+    const course = courseSelect.value as Course;
+    const eventKey = eventSelect.value;
+
+    // Replace an existing entry for the same event+course rather than stacking
+    // duplicates -- families log a best time, not every swim.
+    const existing = state.entries.findIndex((e) => e.eventKey === eventKey && e.course === course);
+    if (existing >= 0) {
+      state.entries[existing] = { eventKey, course, seconds };
+    } else {
+      state.entries.push({ eventKey, course, seconds });
+    }
+
+    saveState(state);
+    timeInput.value = "";
+    render();
+  });
+
+  for (const el of [ageInput, genderSelect]) {
+    el.addEventListener("input", () => {
+      state.age = Number(ageInput.value);
+      state.gender = genderSelect.value as Gender;
+      saveState(state);
+      render();
+    });
+  }
+  courseSelect.addEventListener("change", populateEvents);
+
+  render();
+</script>

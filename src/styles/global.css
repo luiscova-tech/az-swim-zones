@@ -350,6 +350,51 @@ main {
   text-align: right;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.muted-cell {
+  color: var(--color-text-muted);
+}
+
+.tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+  white-space: nowrap;
+}
+
+.tag-aaa {
+  background: var(--color-success-bg);
+  color: #1c6b60;
+  border: 1px solid var(--color-success);
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0.4rem 0.2rem;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.link-button:hover {
+  color: var(--color-primary-dark);
+}
+
 .pill {
   display: inline-block;
   font-size: 0.68rem;
