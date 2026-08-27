@@ -1,0 +1,52 @@
+---
+import "../styles/global.css";
+import { withBase } from "../lib/url";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "An independent, unofficial resource helping Arizona 14&U swimmers see their path to the Western Zone Age Group Championship." } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} · Road to Zones</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href={withBase("/favicon.svg")} type="image/svg+xml" />
+  </head>
+  <body>
+    <div class="disclaimer-strip">
+      Unofficial, independent resource — not affiliated with Arizona Swimming or USA Swimming. Eligibility shown here is not selection. <a href={withBase("/about")}>Learn more</a>
+    </div>
+
+    <header class="site-header">
+      <div class="container">
+        <a class="site-logo" href={withBase("/")}>Road to <span>Zones</span></a>
+        <nav class="site-nav">
+          <a href={withBase("/")}>Home</a>
+          <a href={withBase("/calculator")} class="cta">Am I Eligible?</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <slot />
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          Road to Zones is an independent, unofficial fan project. It is not Arizona Swimming (AZSI), not USA
+          Swimming, and it does not select teams — only your LSC does that.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

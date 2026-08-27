@@ -12,5 +12,5 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["node"]
   },
-  "include": ["scripts", "vitest.config.ts"]
+  "include": ["scripts", "src", "vitest.config.ts", "astro.config.mjs"]
 }

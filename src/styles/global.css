@@ -1,0 +1,265 @@
+/* Road to Zones — shared styles. Mobile-first: base rules target small
+   phone screens (most of this site's traffic is a parent at a swim meet),
+   enhanced upward with min-width media queries. */
+
+:root {
+  --color-bg: #f5f9fc;
+  --color-surface: #ffffff;
+  --color-text: #0f2942;
+  --color-text-muted: #52697e;
+  --color-primary: #0077b6;
+  --color-primary-dark: #023e73;
+  --color-accent: #ffb703;
+  --color-success: #2a9d8f;
+  --color-success-bg: #e6f6f4;
+  --color-border: #d9e6f2;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 3px rgba(15, 41, 66, 0.08);
+  --shadow-md: 0 4px 16px rgba(15, 41, 66, 0.1);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --max-content-width: 960px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--color-primary);
+}
+
+.container {
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* --- Disclaimer strip: visible on every page, not just a footer link --- */
+.disclaimer-strip {
+  background: var(--color-primary-dark);
+  color: #eaf3fb;
+  font-size: 0.8rem;
+  text-align: center;
+  padding: 0.5rem 1rem;
+}
+
+.disclaimer-strip a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* --- Header / nav --- */
+.site-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.site-logo {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--color-primary-dark);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-logo span {
+  color: var(--color-primary);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.site-nav a {
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-md);
+}
+
+.site-nav a:hover {
+  background: var(--color-bg);
+}
+
+.site-nav a.cta {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.site-nav a.cta:hover {
+  background: var(--color-primary-dark);
+}
+
+/* --- Main content --- */
+main {
+  padding: 1.5rem 0 3rem;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem;
+}
+
+.page-subtitle {
+  color: var(--color-text-muted);
+  margin: 0 0 1.5rem;
+  max-width: 60ch;
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+/* --- Forms (mobile-first: full-width stacked fields, large touch targets) --- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.field label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.field select,
+.field input {
+  font-size: 1.05rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 44px; /* touch target */
+  width: 100%;
+}
+
+.field select:focus,
+.field input:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+/* --- Result panel --- */
+.result {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.result[data-state="aaa"] {
+  background: var(--color-success-bg);
+  border-color: var(--color-success);
+}
+
+.result[data-state="chasing"] {
+  background: #fff8e8;
+  border-color: var(--color-accent);
+}
+
+.result[data-state="ineligible"] {
+  background: #f2f4f6;
+  border-color: var(--color-border);
+}
+
+.result[data-state="idle"] {
+  color: var(--color-text-muted);
+}
+
+.result-headline {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin: 0 0 0.35rem;
+}
+
+.result-detail {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+.button-primary {
+  display: inline-block;
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  min-height: 44px;
+}
+
+.button-primary:hover {
+  background: var(--color-primary-dark);
+}
+
+.footer {
+  border-top: 1px solid var(--color-border);
+  margin-top: 2rem;
+  padding: 1.5rem 0;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+/* --- Larger screens --- */
+@media (min-width: 640px) {
+  .field-row.cols-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .page-title {
+    font-size: 1.9rem;
+  }
+}

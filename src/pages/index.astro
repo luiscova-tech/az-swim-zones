@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../lib/url";
+---
+
+<BaseLayout title="Home">
+  <h1 class="page-title">Arizona has one of the deepest 14&U pools in the West.</h1>
+  <p class="page-subtitle">
+    Let's actually take them to Zones. This site is here to make eligibility visible, personal, and
+    reachable — for swimmers, families, and coaches.
+  </p>
+
+  <div class="card">
+    <p style="margin-top:0">
+      🚧 This page is still being built out — the full Announcements board (newly-qualified swimmers,
+      live counts, countdown) is coming soon.
+    </p>
+    <p style="margin-bottom:0">
+      In the meantime, the <strong>"Am I Eligible?"</strong> calculator is ready right now — it works for
+      any swimmer, even if you're not in Arizona's database yet.
+    </p>
+  </div>
+
+  <p style="margin-top:1.5rem">
+    <a class="button-primary" href={withBase("/calculator")}>Check your eligibility →</a>
+  </p>
+</BaseLayout>

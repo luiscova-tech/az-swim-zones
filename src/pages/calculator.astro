@@ -1,0 +1,199 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Am I Eligible?"
+  description="Check any swimmer's AAA eligibility for Western Zones — enter an event, time, course, gender and age to see the exact gap."
+>
+  <h1 class="page-title">Am I Eligible?</h1>
+  <p class="page-subtitle">
+    Enter one time to see where you stand against the AAA standard. Works for any swimmer — including
+    if you're new to Arizona or not yet in our database.
+  </p>
+
+  <div class="card">
+    <form id="calc-form" autocomplete="off">
+      <div class="field-row cols-2">
+        <div class="field">
+          <label for="calc-age">Age (on the meet's first day)</label>
+          <input id="calc-age" type="number" inputmode="numeric" min="0" max="18" value="12" />
+        </div>
+        <div class="field">
+          <label for="calc-gender">Gender</label>
+          <select id="calc-gender">
+            <option value="F">Girls</option>
+            <option value="M">Boys</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="calc-event">Event</label>
+        <select id="calc-event"></select>
+      </div>
+
+      <div class="field-row cols-2">
+        <div class="field">
+          <label for="calc-course">Course</label>
+          <select id="calc-course">
+            <option value="SCY">SCY (yards)</option>
+            <option value="LCM">LCM (long course meters)</option>
+            <option value="SCM">SCM (short course meters)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="calc-time">Time</label>
+          <input id="calc-time" type="text" inputmode="decimal" placeholder="e.g. 1:03.45" />
+        </div>
+      </div>
+    </form>
+
+    <div id="calc-result" class="result" data-state="idle" aria-live="polite">
+      <p class="result-headline" id="calc-result-headline">Enter your time to see your gap to AAA.</p>
+      <p class="result-detail" id="calc-result-detail"></p>
+    </div>
+  </div>
+
+  <p class="page-subtitle" style="margin-top:1.5rem; font-size:0.85rem;">
+    Standards shown are the 2025–2028 USA Swimming NAG Motivational "AAA" combined age group times, per
+    course. Times are never converted between LCM, SCM and SCY — each is compared only against its own
+    standard, exactly as WAGZ requires.
+  </p>
+</BaseLayout>
+
+<script>
+  import standardsData from "../../data/standards.json";
+  import { ageGroupForAge, type AgeGroup } from "../../scripts/lib/ageGroup";
+  import { parseTime, formatTime } from "../../scripts/lib/time";
+  import { compareToStandard, getStandardSeconds, type Course, type Gender, type StandardsData } from "../../scripts/lib/standards";
+
+  const standards = standardsData as unknown as StandardsData;
+
+  const ageInput = document.getElementById("calc-age") as HTMLInputElement;
+  const genderSelect = document.getElementById("calc-gender") as HTMLSelectElement;
+  const eventSelect = document.getElementById("calc-event") as HTMLSelectElement;
+  const courseSelect = document.getElementById("calc-course") as HTMLSelectElement;
+  const timeInput = document.getElementById("calc-time") as HTMLInputElement;
+
+  const resultEl = document.getElementById("calc-result") as HTMLDivElement;
+  const headlineEl = document.getElementById("calc-result-headline") as HTMLParagraphElement;
+  const detailEl = document.getElementById("calc-result-detail") as HTMLParagraphElement;
+
+  type ResultState = "idle" | "aaa" | "chasing" | "ineligible";
+
+  function setResult(state: ResultState, headline: string, detail: string) {
+    resultEl.dataset.state = state;
+    headlineEl.textContent = headline;
+    detailEl.textContent = detail;
+  }
+
+  let lastEventListKey = "";
+
+  function populateEventOptions(ageGroup: AgeGroup, course: Course) {
+    const key = `${ageGroup}|${course}`;
+    if (key === lastEventListKey) return;
+    lastEventListKey = key;
+
+    const previousValue = eventSelect.value;
+    const group = standards.ageGroups[ageGroup];
+    eventSelect.innerHTML = "";
+    for (const event of group.events) {
+      const option = document.createElement("option");
+      option.value = event.key;
+      option.textContent = event.displayName[course];
+      eventSelect.appendChild(option);
+    }
+    if ([...eventSelect.options].some((o) => o.value === previousValue)) {
+      eventSelect.value = previousValue;
+    }
+  }
+
+  function render() {
+    const rawAge = ageInput.value.trim();
+    if (rawAge === "") {
+      setResult("idle", "Enter an age to get started.", "");
+      return;
+    }
+
+    const age = Number(rawAge);
+    if (!Number.isFinite(age) || age < 0) {
+      setResult("idle", "That age doesn't look right.", "");
+      return;
+    }
+
+    if (age >= 15) {
+      setResult(
+        "ineligible",
+        "Not age-eligible for Zones",
+        "WAGZ is for 14-and-under swimmers only, based on age on the meet's first day of competition. This calculator covers 10&U through 13-14."
+      );
+      return;
+    }
+
+    const ageGroup = ageGroupForAge(Math.floor(age));
+    if (!ageGroup) {
+      setResult("idle", "Enter an age to get started.", "");
+      return;
+    }
+
+    const course = courseSelect.value as Course;
+    const gender = genderSelect.value as Gender;
+    populateEventOptions(ageGroup, course);
+
+    const eventKey = eventSelect.value;
+    const rawTime = timeInput.value.trim();
+    if (!rawTime) {
+      setResult("idle", "Enter your time to see your gap to AAA.", "");
+      return;
+    }
+
+    let seconds: number | null;
+    try {
+      seconds = parseTime(rawTime);
+    } catch {
+      setResult("idle", "Hmm, that doesn't look like a time.", 'Try a format like 29.59 or 1:03.45.');
+      return;
+    }
+    if (seconds === null) {
+      setResult("idle", "That's not a time we can compare.", "DQ, NS, SCR, DNF, NT, DFS and X aren't times -- there's nothing to measure yet.");
+      return;
+    }
+
+    const standardSeconds = getStandardSeconds(standards, ageGroup, eventKey, course, gender);
+    const eventEntry = standards.ageGroups[ageGroup].events.find((e) => e.key === eventKey);
+    if (standardSeconds === undefined || !eventEntry) {
+      setResult("idle", "That event isn't available for this age group yet.", "");
+      return;
+    }
+
+    const comparison = compareToStandard(seconds, standardSeconds);
+    const eventLabel = eventEntry.displayName[course];
+    const cutDisplay = formatTime(standardSeconds);
+    const gapDisplay = formatTime(Math.abs(comparison.gapSeconds));
+    const percentDisplay = Math.abs(comparison.gapPercent).toFixed(1);
+
+    if (comparison.isAAA) {
+      setResult(
+        "aaa",
+        "🎉 That's AAA!",
+        `${formatTime(seconds)} in the ${eventLabel} (${course}) beats the ${ageGroup} AAA cut of ${cutDisplay} by ${gapDisplay} (${percentDisplay}% faster).`
+      );
+    } else {
+      setResult(
+        "chasing",
+        `${gapDisplay} away from AAA`,
+        `${formatTime(seconds)} in the ${eventLabel} (${course}) is ${gapDisplay} (${percentDisplay}%) off the ${ageGroup} AAA cut of ${cutDisplay}. So close!`
+      );
+    }
+  }
+
+  // Seed the event dropdown before the first render, using the form's default values.
+  populateEventOptions(ageGroupForAge(Number(ageInput.value)) ?? "11-12", courseSelect.value as Course);
+  render();
+
+  for (const el of [ageInput, genderSelect, eventSelect, courseSelect, timeInput]) {
+    el.addEventListener("input", render);
+    el.addEventListener("change", render);
+  }
+</script>
