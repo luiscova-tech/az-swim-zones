@@ -1,0 +1,17 @@
+{
+  "name": "az-swim-zones",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Road to Zones — helping Arizona 14&U swimmers see and reach Western Zone Age Group Championship (WAGZ) eligibility.",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0",
+    "tsx": "^4.19.0",
+    "@types/node": "^22.7.0"
+  }
+}
