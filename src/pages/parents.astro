@@ -1,0 +1,104 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../lib/url";
+import site from "../../config/site.json";
+
+// Forms are placeholders until real URLs exist. Rather than shipping a dead
+// link on the page families are told to use, fall back to an email link.
+const consentFormReady = !site.forms.consentFormUrl.startsWith("REPLACE_ME");
+const contactReady = !site.contactEmail.startsWith("REPLACE_ME");
+---
+
+<BaseLayout
+  title="For Parents"
+  description="How swimmer names are shown on Road to Zones, how to show your swimmer's full name, and how to remove them."
+>
+  <h1 class="page-title">For Parents &amp; Guardians</h1>
+  <p class="page-subtitle">
+    Your swimmer, your call. Here's exactly how names appear on this site and how to change it.
+  </p>
+
+  <div class="card">
+    <h2 class="card-heading">How names are shown by default</h2>
+    <p>
+      Swimmers who've achieved a Zones qualifying mark appear on the board as
+      <strong>first name and last initial</strong> — like <strong>“Ana L.”</strong> — along with their
+      club and age group.
+    </p>
+    <p style="margin-bottom:0">
+      We don't show full names unless a parent or guardian asks us to.
+    </p>
+  </div>
+
+  <div class="card callout">
+    <h2 class="card-heading">Want your swimmer's full name shown?</h2>
+    <p>
+      Some families are proud to see the full name up there — and it makes the board feel real. If
+      that's you, tell us and we'll switch it.
+    </p>
+    <p>You can choose either or both:</p>
+    <ul class="tight-list">
+      <li><strong>Show the full name</strong> on the eligible-swimmers board</li>
+      <li><strong>Use the name in announcements</strong> — celebrating new qualifiers</li>
+    </ul>
+    <p class="note">
+      These are separate choices on purpose. Saying yes to a name on the board doesn't mean saying
+      yes to being featured in a post.
+    </p>
+    {
+      consentFormReady ? (
+        <p style="margin-bottom:0">
+          <a class="button-primary" href={site.forms.consentFormUrl} target="_blank" rel="noopener noreferrer">
+            Open the permission form →
+          </a>
+        </p>
+      ) : (
+        <p class="note" style="margin-bottom:0">
+          ⚠️ The permission form isn't set up yet. It'll be linked here as soon as it is.
+        </p>
+      )
+    }
+  </div>
+
+  <div class="card callout callout-warn">
+    <h2 class="card-heading">Want your swimmer removed?</h2>
+    <p>
+      No reason needed and no questions asked. Ask, and they come off the board, out of the counts,
+      and out of anything we generate — and they stay off.
+    </p>
+    <p style="margin-bottom:0">
+      Use the same form and pick <strong>“Remove my swimmer”</strong>{
+        contactReady ? (
+          <>, or email <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a></>
+        ) : null
+      }.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-heading">Something wrong?</h2>
+    <p style="margin-bottom:0">
+      Times and age groups here come from public meet results, and ages are worked out from the
+      results themselves rather than from any birthdate — so they can be wrong. If your swimmer is in
+      the wrong age group or a time looks off, please tell us. Corrections are welcome and we'd
+      rather fix it than have a family see something incorrect.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-heading">What we never collect</h2>
+    <ul class="tight-list" style="margin-bottom:0">
+      <li><strong>No birthdates.</strong> Not collected, not stored, not published.</li>
+      <li><strong>No accounts, no tracking, no analytics.</strong></li>
+      <li>
+        Anything you enter on the <a href={withBase("/calculator")}>calculator</a> or
+        <a href={withBase("/my-times")}>My Times</a> stays in your own browser and is never sent to us.
+      </li>
+    </ul>
+  </div>
+
+  <p class="page-subtitle" style="margin-top:1.5rem; font-size:0.85rem;">
+    Reminder: appearing on this site is not team selection. Only Arizona Swimming selects the Zone
+    team. <a href={withBase("/about")}>More about this site →</a>
+  </p>
+</BaseLayout>

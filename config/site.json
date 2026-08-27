@@ -1,0 +1,10 @@
+{
+  "_readme": "Site-level config that isn't tied to a specific meet. Form URLs are PLACEHOLDERS until real ones are created — any page linking to a form checks for the 'REPLACE_ME' prefix and shows an email fallback instead of a dead link.",
+  "contactEmail": "REPLACE_ME@example.com",
+  "forms": {
+    "consentFormUrl": "REPLACE_ME_CONSENT_FORM_URL",
+    "errorReportFormUrl": "REPLACE_ME_ERROR_FORM_URL",
+    "featureRequestFormUrl": "REPLACE_ME_FEATURE_FORM_URL"
+  },
+  "githubIssuesUrl": "https://github.com/luiscova-tech/az-swim-zones/issues"
+}
