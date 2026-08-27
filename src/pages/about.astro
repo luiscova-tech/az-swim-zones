@@ -1,0 +1,91 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../lib/url";
+import meet from "../../config/meet.json";
+---
+
+<BaseLayout
+  title="About & Disclaimer"
+  description="Road to Zones is an independent, unofficial resource. It is not Arizona Swimming or USA Swimming, and it does not select teams."
+>
+  <h1 class="page-title">About this site</h1>
+  <p class="page-subtitle">
+    Road to Zones exists for one reason: Arizona has more Zones-eligible 14&amp;U swimmers than it
+    sends. This site tries to make that gap visible so fewer families miss the chance.
+  </p>
+
+  <div class="card callout callout-warn">
+    <h2 class="card-heading">Please read this part</h2>
+    <ul class="tight-list">
+      <li>
+        This is an <strong>independent, unofficial</strong> resource. It is
+        <strong>not affiliated with Arizona Swimming (AZSI), USA Swimming, or the Western Zone</strong>,
+        and it does not speak for any of them.
+      </li>
+      <li>
+        <strong>Eligibility shown here is not selection.</strong> Meeting a AAA standard does not put a
+        swimmer on a team. Only the LSC selects the Zone team, by its own process.
+      </li>
+      <li>
+        <strong>Always confirm with your club coach.</strong> If this site and your coach disagree,
+        your coach is right.
+      </li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2 class="card-heading">What the site does and doesn't know</h2>
+    <p>
+      The <a href={withBase("/calculator")}>eligibility calculator</a> compares a time you type in
+      against the published AAA time standards. It runs entirely in your browser — nothing you enter
+      is sent anywhere, stored, or logged.
+    </p>
+    <p>
+      Time standards come from the 2025–2028 USA Swimming National Age Group Motivational Standards
+      ("AAA", combined age group), as published in the Western Zone Age Group Championships standards
+      document. They're reproduced here for reference; the official documents govern.
+    </p>
+    <p style="margin-bottom:0">
+      <strong>Times are never converted between courses.</strong> A long course time is only ever
+      compared against the long course standard, short course meters against short course meters, and
+      yards against yards. Zones does not accept converted times, so neither does this site.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-heading">Privacy</h2>
+    <p>
+      This site collects <strong>no birthdates</strong> — not from you, not from anywhere else. The
+      calculator asks for an age only to pick the right standards table, and that value never leaves
+      your device.
+    </p>
+    <p style="margin-bottom:0">
+      There are no accounts, no trackers, and no analytics on this site.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-heading">Target meet</h2>
+    <p>
+      Everything on this site is calculated against <strong>{meet.meetName}</strong>.
+    </p>
+    <ul class="tight-list">
+      <li>Location: <strong>{meet.location}</strong></li>
+      <li>First day of competition: <strong>{meet.firstDayOfCompetition}</strong></li>
+      <li>Entry deadline: <strong>{meet.entryDeadline}</strong></li>
+    </ul>
+    <p class="note" style="margin-bottom:0">
+      ⚠️ The {meet.targetYear} dates and host city have <strong>not been announced yet</strong>. The
+      values above are placeholders so the math has something to work with, and they will change.
+      Don't book flights based on this page.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-heading">Found a mistake?</h2>
+    <p style="margin-bottom:0">
+      Corrections are genuinely welcome — especially on the time standards, where a typo could tell a
+      swimmer the wrong thing. Reporting links will be added here shortly.
+    </p>
+  </div>
+</BaseLayout>

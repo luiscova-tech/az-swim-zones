@@ -1,0 +1,145 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import standardsData from "../../data/standards.json";
+import type { StandardsData } from "../../scripts/lib/standards";
+
+const standards = standardsData as unknown as StandardsData;
+const COURSES = ["SCY", "LCM", "SCM"] as const;
+const AGE_GROUPS = ["10U", "11-12", "13-14"] as const;
+
+// Pre-render every row for all three courses. The page ships one table and
+// filters it client-side, so switching course/age group/gender is instant and
+// works with no network -- important at a pool deck on bad wifi.
+const rows = AGE_GROUPS.flatMap((ageGroup) =>
+  standards.ageGroups[ageGroup].events.flatMap((event) =>
+    COURSES.map((course) => ({
+      ageGroup,
+      course,
+      eventKey: event.key,
+      name: event.displayName[course],
+      girls: event.standards.girls[course],
+      boys: event.standards.boys[course],
+      inWagzProgram: standards.wagzEventProgram[ageGroup].includes(event.key),
+    }))
+  )
+);
+---
+
+<BaseLayout
+  title="AAA Standards"
+  description="Browse the 2025-2028 USA Swimming AAA time standards for every event, age group and course."
+>
+  <h1 class="page-title">AAA Time Standards</h1>
+  <p class="page-subtitle">
+    One AAA time in any course makes a swimmer eligible. Pick a course and age group to see every cut.
+  </p>
+
+  <div class="card">
+    <div class="field-row cols-2">
+      <div class="field">
+        <label for="std-agegroup">Age group</label>
+        <select id="std-agegroup">
+          <option value="10U">10 &amp; Under</option>
+          <option value="11-12" selected>11-12</option>
+          <option value="13-14">13-14</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="std-course">Course</label>
+        <select id="std-course">
+          <option value="SCY">SCY (yards)</option>
+          <option value="LCM">LCM (long course meters)</option>
+          <option value="SCM">SCM (short course meters)</option>
+        </select>
+      </div>
+    </div>
+
+    <label class="checkbox-row">
+      <input type="checkbox" id="std-wagz-only" />
+      <span>Only show events swum at Zones</span>
+    </label>
+
+    <div class="table-scroll">
+      <table class="std-table">
+        <thead>
+          <tr>
+            <th scope="col">Event</th>
+            <th scope="col">Girls</th>
+            <th scope="col">Boys</th>
+          </tr>
+        </thead>
+        <tbody id="std-tbody">
+          {
+            rows.map((row) => (
+              <tr
+                data-agegroup={row.ageGroup}
+                data-course={row.course}
+                data-wagz={row.inWagzProgram ? "1" : "0"}
+              >
+                <th scope="row">
+                  {row.name}
+                  {!row.inWagzProgram && <span class="pill" title="Not contested at Zones for this age group">not at Zones</span>}
+                </th>
+                <td>{row.girls}</td>
+                <td>{row.boys}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <p class="note" id="std-empty" hidden>No events match that combination.</p>
+  </div>
+
+  <div class="card callout">
+    <h2 class="card-heading">Two things worth knowing</h2>
+    <ul class="tight-list">
+      <li>
+        <strong>Courses are never converted.</strong> A yards time is compared only against a yards
+        standard. Zones does not accept converted times.
+      </li>
+      <li>
+        <strong>The standards table is wider than the Zones program.</strong> 13-14 swimmers have AAA
+        cuts for 50s of stroke, but Zones doesn't contest them — they swim 100s and 200s instead.
+        Rows marked <span class="pill">not at Zones</span> still count for eligibility; you just
+        can't enter that event at the meet.
+      </li>
+    </ul>
+  </div>
+
+  <p class="page-subtitle" style="font-size:0.85rem; margin-top:1.5rem;">
+    2025–2028 USA Swimming National Age Group Motivational Standards, "AAA" combined age group.
+    Reproduced for reference — the official documents govern.
+  </p>
+</BaseLayout>
+
+<script>
+  const ageGroupSelect = document.getElementById("std-agegroup") as HTMLSelectElement;
+  const courseSelect = document.getElementById("std-course") as HTMLSelectElement;
+  const wagzOnly = document.getElementById("std-wagz-only") as HTMLInputElement;
+  const emptyNote = document.getElementById("std-empty") as HTMLParagraphElement;
+  const bodyRows = Array.from(document.querySelectorAll<HTMLTableRowElement>("#std-tbody tr"));
+
+  function applyFilters() {
+    const ageGroup = ageGroupSelect.value;
+    const course = courseSelect.value;
+    const onlyWagz = wagzOnly.checked;
+
+    let visible = 0;
+    for (const row of bodyRows) {
+      const matches =
+        row.dataset.agegroup === ageGroup &&
+        row.dataset.course === course &&
+        (!onlyWagz || row.dataset.wagz === "1");
+      row.hidden = !matches;
+      if (matches) visible++;
+    }
+    emptyNote.hidden = visible > 0;
+  }
+
+  for (const el of [ageGroupSelect, courseSelect, wagzOnly]) {
+    el.addEventListener("change", applyFilters);
+  }
+  applyFilters();
+</script>

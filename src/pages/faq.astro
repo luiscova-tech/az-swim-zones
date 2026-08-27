@@ -1,0 +1,112 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../lib/url";
+import meet from "../../config/meet.json";
+---
+
+<BaseLayout
+  title="Cost, Travel & FAQ"
+  description="Honest, practical answers about what Western Zones is, what the week looks like, and what it costs."
+>
+  <h1 class="page-title">Cost, Travel &amp; FAQ</h1>
+  <p class="page-subtitle">
+    Straight answers, including the ones we don't have yet. If something here is wrong or out of
+    date, tell us.
+  </p>
+
+  <div class="card">
+    <h2 class="card-heading">What is Zones, really?</h2>
+    <p>
+      The <strong>Western Zone Age Group Championships</strong> is the biggest meet most 14&amp;U
+      swimmers in the West can reach. Every LSC in the Western Zone — Arizona among them — sends a
+      team, and swimmers compete for their <strong>LSC</strong>, not their club.
+    </p>
+    <p style="margin-bottom:0">
+      For a lot of kids it's the first time they wear "Arizona" on a cap instead of their club name,
+      the first time they travel with a team, and the first time they see what a fast heat really
+      looks like. Ask anyone who's been.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-heading">Who can go?</h2>
+    <p>A swimmer needs all three:</p>
+    <ol class="tight-list">
+      <li>Registered with <strong>Arizona Swimming</strong>.</li>
+      <li>
+        <strong>14 or younger on the first day of competition</strong> — not today, and not on their
+        club's roster. Age on day one of the meet is what counts, and it's what puts a swimmer in
+        10&amp;U, 11-12, or 13-14.
+      </li>
+      <li>At least one <strong>AAA time</strong> in any course during the qualifying window.</li>
+    </ol>
+    <p style="margin-bottom:0">
+      Not sure? The <a href={withBase("/calculator")}>calculator</a> will tell you in about ten
+      seconds.
+    </p>
+  </div>
+
+  <div class="card callout callout-warn">
+    <h2 class="card-heading">Does a AAA time mean my swimmer is going?</h2>
+    <p style="margin-bottom:0">
+      <strong>No.</strong> This is the single most important thing on this page. Being eligible means
+      a swimmer <em>could</em> be selected. Arizona Swimming selects the team, by its own process, and
+      the Zone caps the roster at {meet.rosterCap} athletes per LSC. Eligibility is the door being
+      open — walking through it is up to the LSC and your coach.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-heading">What does it cost?</h2>
+    <p class="note">
+      We don't know, and we'd rather say so than guess. Arizona Swimming does not currently publish a
+      team fee for Zones. Once it does, it will go here.
+    </p>
+    <p>Realistically, families should expect some mix of:</p>
+    <ul class="tight-list">
+      <li>A team fee set by the LSC (covers coaching, team gear, and staff costs)</li>
+      <li>Travel to the host city — which for {meet.targetYear} is <strong>{meet.location}</strong></li>
+      <li>Lodging for roughly a week, often at a designated team hotel</li>
+      <li>Meals, and a parent's own travel if they're going</li>
+    </ul>
+    <p style="margin-bottom:0">
+      <strong>If cost is the thing standing in the way, ask.</strong> Clubs and LSCs frequently have
+      travel assistance, and it is very often underused simply because families don't know to ask for
+      it. Talk to your coach early — well before the entry deadline, not after.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-heading">Do parents travel with the team?</h2>
+    <p style="margin-bottom:0">
+      Usually the team travels together with LSC-appointed coaches and chaperones, and families
+      travel separately if they want to watch. Chaperone ratios and Safe Sport requirements are set
+      by the LSC. Your coach can tell you how Arizona has handled it in past years.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-heading">What does the week actually look like?</h2>
+    <p style="margin-bottom:0">
+      Four days of competition, prelims in the morning and finals at night, with the team together
+      between sessions. Swimmers can enter up to <strong>6 individual events</strong>, maximum
+      <strong>3 per day</strong>, plus relays. It's a long week and a fast one.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-heading">I think my swimmer qualifies. What now?</h2>
+    <ol class="tight-list">
+      <li>Check the time on the <a href={withBase("/calculator")}>calculator</a>.</li>
+      <li>
+        <strong>Talk to your club coach.</strong> They know the LSC process, the deadlines, and
+        whether the time was swum in an approved meet.
+      </li>
+      <li>Watch for Arizona Swimming's announcement and the entry deadline — <strong>{meet.entryDeadline}</strong> for {meet.targetYear}.</li>
+    </ol>
+    <p class="note" style="margin-bottom:0">
+      Don't wait for someone to contact you. Plenty of eligible swimmers never go simply because
+      nobody realized they were eligible in time.
+    </p>
+  </div>
+</BaseLayout>

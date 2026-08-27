@@ -10,18 +10,34 @@ import { withBase } from "../lib/url";
     reachable — for swimmers, families, and coaches.
   </p>
 
-  <div class="card">
-    <p style="margin-top:0">
-      🚧 This page is still being built out — the full Announcements board (newly-qualified swimmers,
-      live counts, countdown) is coming soon.
+  <div class="card callout">
+    <h2 class="card-heading">Start here: is your swimmer already eligible?</h2>
+    <p>
+      One AAA time in any course is the whole bar. Most families are surprised — a lot of Arizona
+      swimmers are already fast enough and nobody has told them.
     </p>
     <p style="margin-bottom:0">
-      In the meantime, the <strong>"Am I Eligible?"</strong> calculator is ready right now — it works for
-      any swimmer, even if you're not in Arizona's database yet.
+      <a class="button-primary" href={withBase("/calculator")}>Check a time →</a>
     </p>
   </div>
 
-  <p style="margin-top:1.5rem">
-    <a class="button-primary" href={withBase("/calculator")}>Check your eligibility →</a>
+  <div class="tile-grid">
+    <a class="tile" href={withBase("/standards")}>
+      <span class="tile-title">AAA Standards</span>
+      <span class="tile-desc">Every cut, every event, all three courses.</span>
+    </a>
+    <a class="tile" href={withBase("/faq")}>
+      <span class="tile-title">Cost &amp; Travel</span>
+      <span class="tile-desc">What the week looks like, and what it costs.</span>
+    </a>
+    <a class="tile" href={withBase("/about")}>
+      <span class="tile-title">About this site</span>
+      <span class="tile-desc">Who we are — and what we're not.</span>
+    </a>
+  </div>
+
+  <p class="note" style="margin-top:1.5rem">
+    🚧 The swimmer database, newly-qualified board and Team Builder are still being built. The
+    calculator and standards work today and need no data about you at all.
   </p>
 </BaseLayout>
