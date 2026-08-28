@@ -99,6 +99,7 @@ import { withBase } from "../lib/url";
   import {
     compareToStandard,
     getAaStandardSeconds,
+    getAaaaStandardSeconds,
     getStandardSeconds,
     proximityTier,
     type Course,
@@ -219,10 +220,14 @@ import { withBase } from "../lib/url";
     const percentDisplay = Math.abs(comparison.gapPercent).toFixed(1);
 
     if (comparison.isAAA) {
+      const aaaaSeconds = getAaaaStandardSeconds(standards, ageGroup, eventKey, course, gender);
+      const beatsAaaa = aaaaSeconds !== undefined && seconds <= aaaaSeconds;
       setResult(
         "aaa",
-        "🎉 That's AAA!",
-        `${formatTime(seconds)} in the ${eventLabel} (${course}) beats the ${ageGroup} AAA cut of ${cutDisplay} by ${gapDisplay} (${percentDisplay}% faster).`
+        beatsAaaa ? "🏆 That's AAAA — the top standard!" : "🎉 That's AAA!",
+        beatsAaaa
+          ? `${formatTime(seconds)} in the ${eventLabel} (${course}) is past the ${ageGroup} AAAA cut of ${formatTime(aaaaSeconds!)} — the fastest motivational standard there is. Comfortably Zones-qualifying.`
+          : `${formatTime(seconds)} in the ${eventLabel} (${course}) beats the ${ageGroup} AAA cut of ${cutDisplay} by ${gapDisplay} (${percentDisplay}% faster).`
       );
       return;
     }

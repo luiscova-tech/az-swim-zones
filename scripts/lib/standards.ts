@@ -22,6 +22,11 @@ export interface StandardsEventEntry {
     girls: Partial<Record<Course, string>>;
     boys: Partial<Record<Course, string>>;
   };
+  /** Optional AAAA standards — the top motivational tier, faster than AAA. */
+  aaaaStandards?: {
+    girls: Partial<Record<Course, string>>;
+    boys: Partial<Record<Course, string>>;
+  };
 }
 
 export interface StandardsAgeGroup {
@@ -136,11 +141,34 @@ export function getAaStandardSeconds(
   course: Course,
   gender: Gender
 ): number | undefined {
+  return getTierSeconds(standards, ageGroup, eventKey, course, gender, "aaStandards");
+}
+
+/** The AAAA standard for an event, if the standards file carries one. */
+export function getAaaaStandardSeconds(
+  standards: StandardsData,
+  ageGroup: AgeGroup,
+  eventKey: string,
+  course: Course,
+  gender: Gender
+): number | undefined {
+  return getTierSeconds(standards, ageGroup, eventKey, course, gender, "aaaaStandards");
+}
+
+function getTierSeconds(
+  standards: StandardsData,
+  ageGroup: AgeGroup,
+  eventKey: string,
+  course: Course,
+  gender: Gender,
+  field: "aaStandards" | "aaaaStandards"
+): number | undefined {
   const group = standards.ageGroups[ageGroup];
   const event = group?.events.find((e) => e.key === eventKey);
-  if (!event?.aaStandards) return undefined;
+  const table = event?.[field];
+  if (!table) return undefined;
   const genderKey = gender === "F" ? "girls" : "boys";
-  const raw = event.aaStandards[genderKey]?.[course];
+  const raw = table[genderKey]?.[course];
   if (!raw) return undefined;
   return parseTime(raw) ?? undefined;
 }

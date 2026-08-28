@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import standardsData from "../../data/standards.json" with { type: "json" };
 import {
   getAaStandardSeconds,
+  getAaaaStandardSeconds,
   getStandardSeconds,
   proximityTier,
   type StandardsData,
@@ -125,6 +126,44 @@ describe("AA/AAA invariants across the whole standards table", () => {
             const aaa = getStandardSeconds(standards, ag, ev.key, course, gender)!;
             const aa = getAaStandardSeconds(standards, ag, ev.key, course, gender)!;
             expect(aa, `${ag} ${ev.key} ${course} ${gender}: AA ${aa} must exceed AAA ${aaa}`).toBeGreaterThan(aaa);
+          }
+        }
+      }
+    }
+  });
+
+  it("every event has an AAAA time too (252 values)", () => {
+    let count = 0;
+    for (const ag of AGE_GROUPS) {
+      for (const ev of standards.ageGroups[ag].events) {
+        for (const course of COURSES) {
+          for (const gender of GENDERS) {
+            expect(
+              getAaaaStandardSeconds(standards, ag, ev.key, course, gender),
+              `AAAA missing: ${ag} ${ev.key} ${course} ${gender}`
+            ).toBeDefined();
+            count++;
+          }
+        }
+      }
+    }
+    expect(count).toBe(252);
+  });
+
+  it("the full ladder is strictly ordered: AAAA < AAA < AA", () => {
+    // The single strongest guard on the whole extraction. The source PDF
+    // mirrors its boys columns, so any mis-parse would break this ordering
+    // somewhere across the 252 rows.
+    for (const ag of AGE_GROUPS) {
+      for (const ev of standards.ageGroups[ag].events) {
+        for (const course of COURSES) {
+          for (const gender of GENDERS) {
+            const aaaa = getAaaaStandardSeconds(standards, ag, ev.key, course, gender)!;
+            const aaa = getStandardSeconds(standards, ag, ev.key, course, gender)!;
+            const aa = getAaStandardSeconds(standards, ag, ev.key, course, gender)!;
+            const where = `${ag} ${ev.key} ${course} ${gender}`;
+            expect(aaaa, `${where}: AAAA ${aaaa} must be faster than AAA ${aaa}`).toBeLessThan(aaa);
+            expect(aaa, `${where}: AAA ${aaa} must be faster than AA ${aa}`).toBeLessThan(aa);
           }
         }
       }

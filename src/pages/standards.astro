@@ -19,6 +19,10 @@ const rows = AGE_GROUPS.flatMap((ageGroup) =>
       name: event.displayName[course],
       girls: event.standards.girls[course],
       boys: event.standards.boys[course],
+      girlsAa: event.aaStandards?.girls?.[course],
+      boysAa: event.aaStandards?.boys?.[course],
+      girlsAaaa: event.aaaaStandards?.girls?.[course],
+      boysAaaa: event.aaaaStandards?.boys?.[course],
       inWagzProgram: standards.wagzEventProgram[ageGroup].includes(event.key),
     }))
   )
@@ -59,13 +63,22 @@ const rows = AGE_GROUPS.flatMap((ageGroup) =>
       <span>Only show events swum at Zones</span>
     </label>
 
+    <label class="checkbox-row">
+      <input type="checkbox" id="std-show-tiers" />
+      <span>Show AA and AAAA too</span>
+    </label>
+
     <div class="table-scroll">
       <table class="std-table">
         <thead>
           <tr>
             <th scope="col">Event</th>
-            <th scope="col">Girls</th>
-            <th scope="col">Boys</th>
+            <th scope="col" class="tier-col" hidden>Girls AA</th>
+            <th scope="col">Girls AAA</th>
+            <th scope="col" class="tier-col" hidden>Girls AAAA</th>
+            <th scope="col" class="tier-col" hidden>Boys AA</th>
+            <th scope="col">Boys AAA</th>
+            <th scope="col" class="tier-col" hidden>Boys AAAA</th>
           </tr>
         </thead>
         <tbody id="std-tbody">
@@ -80,8 +93,12 @@ const rows = AGE_GROUPS.flatMap((ageGroup) =>
                   {row.name}
                   {!row.inWagzProgram && <span class="pill" title="Not contested at Zones for this age group">not at Zones</span>}
                 </th>
+                <td class="tier-col muted-cell" hidden>{row.girlsAa ?? "—"}</td>
                 <td>{row.girls}</td>
+                <td class="tier-col muted-cell" hidden>{row.girlsAaaa ?? "—"}</td>
+                <td class="tier-col muted-cell" hidden>{row.boysAa ?? "—"}</td>
                 <td>{row.boys}</td>
+                <td class="tier-col muted-cell" hidden>{row.boysAaaa ?? "—"}</td>
               </tr>
             ))
           }
@@ -118,6 +135,8 @@ const rows = AGE_GROUPS.flatMap((ageGroup) =>
   const ageGroupSelect = document.getElementById("std-agegroup") as HTMLSelectElement;
   const courseSelect = document.getElementById("std-course") as HTMLSelectElement;
   const wagzOnly = document.getElementById("std-wagz-only") as HTMLInputElement;
+  const showTiers = document.getElementById("std-show-tiers") as HTMLInputElement;
+  const tierCells = Array.from(document.querySelectorAll<HTMLElement>(".tier-col"));
   const emptyNote = document.getElementById("std-empty") as HTMLParagraphElement;
   const bodyRows = Array.from(document.querySelectorAll<HTMLTableRowElement>("#std-tbody tr"));
 
@@ -136,9 +155,14 @@ const rows = AGE_GROUPS.flatMap((ageGroup) =>
       if (matches) visible++;
     }
     emptyNote.hidden = visible > 0;
+
+    // AA/AAAA columns are hidden by default: AAA is the number that decides
+    // eligibility, and showing six time columns by default makes the table
+    // unreadable on a phone.
+    for (const cell of tierCells) cell.hidden = !showTiers.checked;
   }
 
-  for (const el of [ageGroupSelect, courseSelect, wagzOnly]) {
+  for (const el of [ageGroupSelect, courseSelect, wagzOnly, showTiers]) {
     el.addEventListener("change", applyFilters);
   }
   applyFilters();
