@@ -1,0 +1,164 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../lib/url";
+import swimmersData from "../../data/swimmers.sample.json";
+import consentData from "../../data/consent.json";
+import meet from "../../config/meet.json";
+import { displayNameFor, mayAppear, resolveConsentLevel } from "../../scripts/lib/displayName";
+import type { AgeGroup } from "../../scripts/lib/ageGroup";
+
+interface SampleSwimmer {
+  key: string;
+  fullName: string;
+  club: string;
+  gender: "F" | "M";
+  wagzAge: number;
+  ageGroup: string;
+  ageUncertain: boolean;
+  aaaEventCount: number;
+  bestEvent: { name: string; course: string; time: string };
+}
+
+const isSampleData = swimmersData._fictional === true;
+const consentByKey = consentData.consent as Record<string, string | undefined>;
+
+// Consent is applied HERE, once, before anything renders -- so a swimmer set to
+// "excluded" cannot reach the page, the counts, or anything derived from them.
+const visible = (swimmersData.swimmers as SampleSwimmer[])
+  .map((s) => {
+    const level = resolveConsentLevel(consentByKey, s.key);
+    return { ...s, level, displayName: displayNameFor(s.fullName, level) };
+  })
+  .filter((s) => mayAppear(s.level) && s.displayName !== null);
+
+const AGE_GROUPS: AgeGroup[] = ["10U", "11-12", "13-14"];
+const AGE_GROUP_LABELS: Record<AgeGroup, string> = {
+  "10U": "10 & Under",
+  "11-12": "11-12",
+  "13-14": "13-14",
+};
+const GENDERS = [
+  { key: "F" as const, label: "Girls" },
+  { key: "M" as const, label: "Boys" },
+];
+
+const totalEligible = visible.length;
+const clubCount = new Set(visible.map((s) => s.club)).size;
+
+function swimmersIn(gender: "F" | "M", ageGroup: AgeGroup) {
+  return visible
+    .filter((s) => s.gender === gender && s.ageGroup === ageGroup)
+    .sort((a, b) => b.aaaEventCount - a.aaaEventCount);
+}
+---
+
+<BaseLayout
+  title="Eligible Swimmers"
+  description="Arizona swimmers who have achieved a Western Zones qualifying mark, by age group."
+>
+  <h1 class="page-title">Arizona's Zones-eligible swimmers</h1>
+  <p class="page-subtitle">
+    Every swimmer here has hit at least one AAA mark. Being eligible isn't being selected — but it
+    means the door is open.
+  </p>
+
+  {
+    isSampleData && (
+      <div class="card callout callout-warn">
+        <h2 class="card-heading">⚠️ Sample data — not real swimmers</h2>
+        <p style="margin-bottom:0">
+          Every name on this page is <strong>fictional</strong>, invented to build and test the page.
+          No real swimmer or time appears here. Real results will replace this once a data source is
+          settled.
+        </p>
+      </div>
+    )
+  }
+
+  <div class="stat-row">
+    <div class="stat">
+      <span class="stat-value">{totalEligible}</span>
+      <span class="stat-label">eligible swimmers</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">{meet.rosterCap}</span>
+      <span class="stat-label">roster spots Arizona may fill</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">{clubCount}</span>
+      <span class="stat-label">clubs represented</span>
+    </div>
+  </div>
+
+  {
+    GENDERS.map((gender) => (
+      <section class="group-section">
+        <h2 class="group-heading">{gender.label}</h2>
+        {AGE_GROUPS.map((ageGroup) => {
+          const group = swimmersIn(gender.key, ageGroup);
+          return (
+            <div class="card">
+              <h3 class="card-heading">
+                {AGE_GROUP_LABELS[ageGroup]}
+                <span class="count-badge">{group.length}</span>
+              </h3>
+              {group.length === 0 ? (
+                <p class="note" style="margin-bottom:0">
+                  No eligible {gender.label.toLowerCase()} in this age group yet.{" "}
+                  <a href={withBase("/calculator")}>That could be your swimmer →</a>
+                </p>
+              ) : (
+                <div class="table-scroll">
+                  <table class="std-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Swimmer</th>
+                        <th scope="col">Club</th>
+                        <th scope="col">AAA events</th>
+                        <th scope="col">Best</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {group.map((s) => (
+                        <tr>
+                          <th scope="row">
+                            {s.displayName}
+                            {s.ageUncertain && (
+                              <span
+                                class="pill"
+                                title="This swimmer's age group is inferred from meet results and may change — check with your coach."
+                              >
+                                check age group
+                              </span>
+                            )}
+                          </th>
+                          <td class="left-cell">{s.club}</td>
+                          <td>{s.aaaEventCount}</td>
+                          <td class="left-cell">
+                            {s.bestEvent.name} <span class="muted-cell">{s.bestEvent.time}</span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </section>
+    ))
+  }
+
+  <div class="card callout">
+    <h2 class="card-heading">About the names</h2>
+    <p>
+      Swimmers appear as first name and last initial unless a parent or guardian has asked us to show
+      the full name. Marked <span class="pill">check age group</span>? That swimmer's age group is
+      worked out from meet results rather than a birthdate, and it might be wrong.
+    </p>
+    <p style="margin-bottom:0">
+      <a href={withBase("/parents")}>Show a full name, fix a mistake, or remove a swimmer →</a>
+    </p>
+  </div>
+</BaseLayout>

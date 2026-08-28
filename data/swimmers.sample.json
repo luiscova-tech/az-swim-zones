@@ -1,0 +1,20 @@
+{
+  "_readme": "SAMPLE DATA — every swimmer below is FICTIONAL, invented to exercise the board's rendering paths. No real child appears here and no time is real. This file exists so the eligible-swimmers page can be built and tested before a lawful Arizona data source is settled. The real file will be data/swimmers.json with the identical shape. Never publish this file's contents as if they were real results.",
+  "_fictional": true,
+  "generatedAt": "2026-08-27T00:00:00Z",
+  "meetName": "2027 Western Zone Age Group Championships",
+  "swimmers": [
+    { "key": "demo-01", "fullName": "Ana Lopez", "club": "Desert Sky Aquatics", "gender": "F", "wagzAge": 12, "ageGroup": "11-12", "ageUncertain": false, "aaaEventCount": 3, "bestEvent": { "name": "100 Free", "course": "SCY", "time": "58.21" } },
+    { "key": "demo-02", "fullName": "Marisol Vega-Ortiz", "club": "Desert Sky Aquatics", "gender": "F", "wagzAge": 11, "ageGroup": "11-12", "ageUncertain": false, "aaaEventCount": 1, "bestEvent": { "name": "50 Fly", "course": "SCY", "time": "28.44" } },
+    { "key": "demo-03", "fullName": "Priya Raman", "club": "Canyon Current Swim Club", "gender": "F", "wagzAge": 12, "ageGroup": "11-12", "ageUncertain": true, "aaaEventCount": 2, "bestEvent": { "name": "200 IM", "course": "SCY", "time": "2:22.80" } },
+    { "key": "demo-04", "fullName": "Tobias Ferreira", "club": "Canyon Current Swim Club", "gender": "M", "wagzAge": 12, "ageGroup": "11-12", "ageUncertain": false, "aaaEventCount": 4, "bestEvent": { "name": "100 Breast", "course": "SCY", "time": "1:09.95" } },
+    { "key": "demo-05", "fullName": "Noor Haddad", "club": "Saguaro Swim Team", "gender": "F", "wagzAge": 10, "ageGroup": "10U", "ageUncertain": false, "aaaEventCount": 1, "bestEvent": { "name": "50 Free", "course": "SCY", "time": "29.12" } },
+    { "key": "demo-06", "fullName": "Emeka Nwosu", "club": "Saguaro Swim Team", "gender": "M", "wagzAge": 9, "ageGroup": "10U", "ageUncertain": true, "aaaEventCount": 1, "bestEvent": { "name": "100 Back", "course": "SCY", "time": "1:11.60" } },
+    { "key": "demo-07", "fullName": "Yuki Tanaka", "club": "Red Rock Riptide", "gender": "F", "wagzAge": 14, "ageGroup": "13-14", "ageUncertain": false, "aaaEventCount": 6, "bestEvent": { "name": "200 Free", "course": "SCY", "time": "1:58.40" } },
+    { "key": "demo-08", "fullName": "Dmitri Kowalczyk", "club": "Red Rock Riptide", "gender": "M", "wagzAge": 13, "ageGroup": "13-14", "ageUncertain": false, "aaaEventCount": 2, "bestEvent": { "name": "100 Fly", "course": "SCY", "time": "54.90" } },
+    { "key": "demo-09", "fullName": "Solveig Bergstrom", "club": "Copper State Swimming", "gender": "F", "wagzAge": 13, "ageGroup": "13-14", "ageUncertain": false, "aaaEventCount": 1, "bestEvent": { "name": "500 Free", "course": "SCY", "time": "5:18.02" } },
+    { "key": "demo-10", "fullName": "Rafael Okonkwo", "club": "Copper State Swimming", "gender": "M", "wagzAge": 14, "ageGroup": "13-14", "ageUncertain": false, "aaaEventCount": 3, "bestEvent": { "name": "200 IM", "course": "SCY", "time": "2:03.11" } },
+    { "key": "demo-11", "fullName": "Chidinma Balogun-Reyes", "club": "Desert Sky Aquatics", "gender": "F", "wagzAge": 10, "ageGroup": "10U", "ageUncertain": false, "aaaEventCount": 2, "bestEvent": { "name": "100 Free", "course": "SCY", "time": "1:03.55" } },
+    { "key": "demo-12", "fullName": "Bo", "club": "Saguaro Swim Team", "gender": "M", "wagzAge": 11, "ageGroup": "11-12", "ageUncertain": false, "aaaEventCount": 1, "bestEvent": { "name": "50 Back", "course": "SCY", "time": "29.40" } }
+  ]
+}
