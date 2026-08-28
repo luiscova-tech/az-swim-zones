@@ -225,6 +225,13 @@ main {
   border-color: var(--color-accent);
 }
 
+/* A long way from the cut: neutral and calm, deliberately NOT the urgent
+   amber of "chasing". Nothing here should read as failure. */
+.result[data-state="developing"] {
+  background: #f4f7fa;
+  border-color: var(--color-border);
+}
+
 .result[data-state="ineligible"] {
   background: #f2f4f6;
   border-color: var(--color-border);

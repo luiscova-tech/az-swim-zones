@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../lib/url";
 ---
 
 <BaseLayout
@@ -55,6 +56,35 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
   </div>
 
+  <div class="card callout" id="calc-next-steps" hidden>
+    <h2 class="card-heading">So what happens now?</h2>
+    <p>
+      A AAA time makes your swimmer <strong>eligible</strong>. It doesn't put them on the team —
+      Arizona Swimming selects the roster. Here's how to not miss the window:
+    </p>
+    <ol class="tight-list">
+      <li>
+        <strong>Talk to your coach.</strong> Families apply for Zones; the coach signs off. You're
+        not asking them to organise anything — just to sign.
+      </li>
+      <li><strong>Ask when the application opens and closes.</strong> It can close earlier than you'd expect.</li>
+      <li><strong>Ask what they'd want to see</strong> between now and then.</li>
+    </ol>
+    <p style="margin-bottom:0">
+      <a href={withBase("/faq")}>What the week costs and looks like →</a>
+    </p>
+  </div>
+
+  <div class="card" id="calc-chasing-steps" hidden>
+    <h2 class="card-heading">Chasing it</h2>
+    <p style="margin-bottom:0">
+      One AAA time in <strong>any single event, any course</strong> is the whole bar — so the fastest
+      route is often a different event, not this one. Try a few in
+      <a href={withBase("/my-times")}>My Times</a> to see which cut is closest, or browse
+      <a href={withBase("/standards")}>every standard</a>.
+    </p>
+  </div>
+
   <p class="page-subtitle" style="margin-top:1.5rem; font-size:0.85rem;">
     Standards shown are the 2025–2028 USA Swimming NAG Motivational "AAA" combined age group times, per
     course. Times are never converted between LCM, SCM and SCY — each is compared only against its own
@@ -66,7 +96,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   import standardsData from "../../data/standards.json";
   import { ageGroupForAge, type AgeGroup } from "../../scripts/lib/ageGroup";
   import { parseTime, formatTime } from "../../scripts/lib/time";
-  import { compareToStandard, getStandardSeconds, type Course, type Gender, type StandardsData } from "../../scripts/lib/standards";
+  import {
+    compareToStandard,
+    getAaStandardSeconds,
+    getStandardSeconds,
+    proximityTier,
+    type Course,
+    type Gender,
+    type StandardsData,
+  } from "../../scripts/lib/standards";
 
   const standards = standardsData as unknown as StandardsData;
 
@@ -80,12 +118,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   const headlineEl = document.getElementById("calc-result-headline") as HTMLParagraphElement;
   const detailEl = document.getElementById("calc-result-detail") as HTMLParagraphElement;
 
-  type ResultState = "idle" | "aaa" | "chasing" | "ineligible";
+  type ResultState = "idle" | "aaa" | "chasing" | "developing" | "ineligible";
+
+  const nextSteps = document.getElementById("calc-next-steps") as HTMLDivElement;
+  const chasingSteps = document.getElementById("calc-chasing-steps") as HTMLDivElement;
 
   function setResult(state: ResultState, headline: string, detail: string) {
     resultEl.dataset.state = state;
     headlineEl.textContent = headline;
     detailEl.textContent = detail;
+    // Follow-ups are driven entirely by state, so no path can leave a stale
+    // "what happens now" panel up under a non-qualifying result.
+    nextSteps.hidden = state !== "aaa";
+    chasingSteps.hidden = state !== "chasing";
   }
 
   let lastEventListKey = "";
@@ -179,11 +224,31 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         "🎉 That's AAA!",
         `${formatTime(seconds)} in the ${eventLabel} (${course}) beats the ${ageGroup} AAA cut of ${cutDisplay} by ${gapDisplay} (${percentDisplay}% faster).`
       );
-    } else {
+      return;
+    }
+
+    // Tone must match the actual gap. Telling a swimmer twenty seconds off
+    // "so close!" is false, and it cheapens the message for the swimmer who
+    // really is a tenth away. Uses the real AA standard when standards.json
+    // carries one, and a conservative percentage band until then.
+    const aaSeconds = getAaStandardSeconds(standards, ageGroup, eventKey, course, gender);
+    const tier = proximityTier(seconds, standardSeconds, aaSeconds);
+    const swum = formatTime(seconds);
+    const context = `${swum} in the ${eventLabel} (${course}). The ${ageGroup} AAA cut is ${cutDisplay}.`;
+
+    if (tier === "close") {
+      setResult("chasing", `${gapDisplay} away from AAA`, `${context} That's genuinely close — this one is in reach.`);
+    } else if (tier === "working") {
       setResult(
         "chasing",
-        `${gapDisplay} away from AAA`,
-        `${formatTime(seconds)} in the ${eventLabel} (${course}) is ${gapDisplay} (${percentDisplay}%) off the ${ageGroup} AAA cut of ${cutDisplay}. So close!`
+        `${gapDisplay} off the AAA cut`,
+        `${context} Worth chasing — and remember a AAA in any other event counts just the same.`
+      );
+    } else {
+      setResult(
+        "developing",
+        `AAA cut is ${cutDisplay}`,
+        `${context} That's a way off yet, and that's completely normal — these are fast standards. Times drop a lot at this age.`
       );
     }
   }
