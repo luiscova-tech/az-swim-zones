@@ -66,6 +66,24 @@ import { withBase } from "../lib/url";
     </form>
   </div>
 
+  <div class="card callout" id="mt-share-card" hidden>
+    <h2 class="card-heading">🎉 Share the news</h2>
+    <p>
+      Make a card to send to family or post wherever you like. It's built here on your device from
+      what you typed — nothing is uploaded, and you choose whether to put a name on it.
+    </p>
+    <div class="field">
+      <label for="mt-share-name">Name on the card (optional)</label>
+      <input id="mt-share-name" type="text" placeholder="e.g. Ana — or leave blank" maxlength="40" />
+    </div>
+    <canvas id="mt-share-canvas" class="share-preview" width="1200" height="630" aria-label="Shareable card preview"></canvas>
+    <div class="button-row">
+      <button type="button" class="button-primary" id="mt-share-download">Download image</button>
+      <button type="button" class="button-secondary" id="mt-share-copy">Copy text version</button>
+    </div>
+    <p class="note" id="mt-share-status" hidden></p>
+  </div>
+
   <div class="card" id="mt-list-card" hidden>
     <h2 class="card-heading">Your times</h2>
     <div class="table-scroll">
@@ -203,6 +221,13 @@ import { withBase } from "../lib/url";
     tbody.innerHTML = "";
     listCard.hidden = state.entries.length === 0;
 
+    // Reset the share card on EVERY render. Each early-return path below would
+    // otherwise leave a stale "Zones Qualified" card on screen -- e.g. after
+    // changing the age to 15, which makes the swimmer ineligible. Only the
+    // success path at the end turns it back on.
+    shareFacts = null;
+    shareCard.hidden = true;
+
     if (age >= 15) {
       // Hide the table rather than showing an empty one -- the standards are
       // age-group scoped, so there's nothing meaningful to compare against.
@@ -223,6 +248,8 @@ import { withBase } from "../lib/url";
 
     let aaaCount = 0;
     let closestGap: { gap: number; label: string } | null = null;
+    // Best AAA swim by margin, so the card leads with their strongest result.
+    let bestAaa: { event: string; time: string; cut: string; margin: number } | null = null;
 
     state.entries.forEach((entry, index) => {
       const standardSeconds = getStandardSeconds(standards, ageGroup, entry.eventKey, entry.course, gender);
@@ -251,8 +278,18 @@ import { withBase } from "../lib/url";
       }
 
       const comparison = compareToStandard(entry.seconds, standardSeconds);
-      if (comparison.isAAA) aaaCount++;
-      else if (closestGap === null || comparison.gapSeconds < closestGap.gap) {
+      if (comparison.isAAA) {
+        aaaCount++;
+        const margin = -comparison.gapSeconds;
+        if (bestAaa === null || margin > bestAaa.margin) {
+          bestAaa = {
+            event: `${eventEntry.displayName[entry.course]} ${entry.course}`,
+            time: formatTime(entry.seconds),
+            cut: formatTime(standardSeconds),
+            margin,
+          };
+        }
+      } else if (closestGap === null || comparison.gapSeconds < closestGap.gap) {
         closestGap = { gap: comparison.gapSeconds, label: eventEntry.displayName[entry.course] };
       }
 
@@ -279,11 +316,21 @@ import { withBase } from "../lib/url";
       tbody.appendChild(row);
     });
 
-    if (aaaCount > 0) {
+    if (aaaCount > 0 && bestAaa !== null) {
+      const best = bestAaa as { event: string; time: string; cut: string; margin: number };
       statusEl.dataset.state = "aaa";
       statusHeadline.textContent =
         aaaCount === 1 ? "🎉 That's a Zones-qualifying time!" : `🎉 ${aaaCount} Zones-qualifying times!`;
       statusDetail.textContent = `One AAA time is all it takes to be eligible for the ${ageGroup} age group. Talk to your coach about Zones.`;
+      shareFacts = {
+        aaaCount,
+        ageGroup,
+        headlineEvent: best.event,
+        headlineTime: best.time,
+        headlineCut: best.cut,
+      };
+      shareCard.hidden = false;
+      drawShareCard();
     } else if (closestGap !== null) {
       const closest = closestGap as { gap: number; label: string };
       statusEl.dataset.state = "chasing";
@@ -295,6 +342,147 @@ import { withBase } from "../lib/url";
       statusDetail.textContent = "";
     }
   }
+
+  // ---- Share card -------------------------------------------------------
+  // Drawn on-device from what the family typed. Nothing is uploaded, and the
+  // name is optional and free-text -- the parent decides what (if anything) to
+  // put on a card about their own child.
+  const shareCard = document.getElementById("mt-share-card") as HTMLDivElement;
+  const shareNameInput = document.getElementById("mt-share-name") as HTMLInputElement;
+  const shareCanvas = document.getElementById("mt-share-canvas") as HTMLCanvasElement;
+  const shareDownload = document.getElementById("mt-share-download") as HTMLButtonElement;
+  const shareCopy = document.getElementById("mt-share-copy") as HTMLButtonElement;
+  const shareStatus = document.getElementById("mt-share-status") as HTMLParagraphElement;
+
+  const SHARE_NAME_KEY = "road-to-zones:share-name:v1";
+  try {
+    const savedName = localStorage.getItem(SHARE_NAME_KEY);
+    if (savedName) shareNameInput.value = savedName;
+  } catch {
+    /* storage unavailable; the field just starts empty */
+  }
+
+  interface ShareFacts {
+    aaaCount: number;
+    ageGroup: AgeGroup;
+    headlineEvent: string;
+    headlineTime: string;
+    headlineCut: string;
+  }
+  let shareFacts: ShareFacts | null = null;
+
+  function drawShareCard() {
+    if (!shareFacts) return;
+    const ctx = shareCanvas.getContext("2d");
+    if (!ctx) return;
+
+    const W = shareCanvas.width;
+    const H = shareCanvas.height;
+    const name = shareNameInput.value.trim();
+
+    ctx.fillStyle = "#023e73";
+    ctx.fillRect(0, 0, W, H);
+
+    // Lane-line stripes, purely decorative.
+    ctx.fillStyle = "rgba(255,255,255,0.05)";
+    for (let y = 0; y < H; y += 64) ctx.fillRect(0, y, W, 28);
+
+    ctx.fillStyle = "#ffb703";
+    ctx.fillRect(0, 0, W, 12);
+
+    ctx.textAlign = "center";
+
+    ctx.fillStyle = "#9fd0f0";
+    ctx.font = "700 30px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    ctx.fillText("ZONES QUALIFIED", W / 2, 108);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "800 78px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    ctx.fillText(name !== "" ? name : "My swimmer", W / 2, 210);
+
+    ctx.fillStyle = "#ffb703";
+    ctx.font = "800 52px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    const eventLine =
+      shareFacts.aaaCount > 1
+        ? `${shareFacts.aaaCount} AAA times · ${shareFacts.ageGroup}`
+        : `AAA · ${shareFacts.ageGroup}`;
+    ctx.fillText(eventLine, W / 2, 296);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "700 60px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    ctx.fillText(`${shareFacts.headlineEvent}   ${shareFacts.headlineTime}`, W / 2, 392);
+
+    ctx.fillStyle = "#9fd0f0";
+    ctx.font = "400 32px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    ctx.fillText(`AAA cut: ${shareFacts.headlineCut}`, W / 2, 444);
+
+    ctx.strokeStyle = "rgba(255,255,255,0.18)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(180, 500);
+    ctx.lineTo(W - 180, 500);
+    ctx.stroke();
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "700 30px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    ctx.fillText("Could your swimmer go to Zones?", W / 2, 552);
+    ctx.fillStyle = "#9fd0f0";
+    ctx.font = "400 27px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    ctx.fillText(window.location.host + window.location.pathname.replace(/\/my-times\/?$/, ""), W / 2, 594);
+  }
+
+  function shareText(): string {
+    if (!shareFacts) return "";
+    const name = shareNameInput.value.trim() || "My swimmer";
+    const site = window.location.host + window.location.pathname.replace(/\/my-times\/?$/, "");
+    return `${name} just swam a Zones-qualifying time! ${shareFacts.headlineEvent} in ${shareFacts.headlineTime} (${shareFacts.ageGroup} AAA cut is ${shareFacts.headlineCut}).\n\nArizona can send 80 swimmers to Western Zones and sent 14 last year — a lot of eligible kids never find out. Check your swimmer in about ten seconds: ${site}`;
+  }
+
+  function flashStatus(message: string) {
+    shareStatus.textContent = message;
+    shareStatus.hidden = false;
+    window.setTimeout(() => {
+      shareStatus.hidden = true;
+    }, 4000);
+  }
+
+  shareNameInput.addEventListener("input", () => {
+    try {
+      localStorage.setItem(SHARE_NAME_KEY, shareNameInput.value);
+    } catch {
+      /* not persisting is fine */
+    }
+    drawShareCard();
+  });
+
+  shareDownload.addEventListener("click", () => {
+    shareCanvas.toBlob((blob) => {
+      if (!blob) {
+        flashStatus("Couldn't build the image — try a screenshot of the preview instead.");
+        return;
+      }
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "zones-qualified.png";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }, "image/png");
+  });
+
+  shareCopy.addEventListener("click", async () => {
+    const text = shareText();
+    try {
+      await navigator.clipboard.writeText(text);
+      flashStatus("Copied — paste it anywhere.");
+    } catch {
+      // Clipboard API needs a secure context and permission; fall back to
+      // selecting the text so the parent can copy it by hand.
+      window.prompt("Copy this:", text);
+    }
+  });
 
   function removeCell(index: number): HTMLTableCellElement {
     const cell = document.createElement("td");

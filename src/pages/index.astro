@@ -1,27 +1,73 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { withBase } from "../lib/url";
+import meet from "../../config/meet.json";
+import site from "../../config/site.json";
+
+const { lastYearSent, lastYearLabel, estimatedEligible } = site.headlineStats;
+const unusedSpots = meet.rosterCap - lastYearSent;
 ---
 
-<BaseLayout title="Home">
-  <h1 class="page-title">Arizona has one of the deepest 14&U pools in the West.</h1>
-  <p class="page-subtitle">
-    Let's actually take them to Zones. This site is here to make eligibility visible, personal, and
-    reachable — for swimmers, families, and coaches.
-  </p>
+<BaseLayout
+  title="Home"
+  description="Arizona could send 80 swimmers to the Western Zone Age Group Championships. Last year it sent 14. Find out in ten seconds whether your swimmer already qualifies."
+>
+  <section class="hero">
+    <p class="hero-kicker">Western Zone Age Group Championships</p>
+    <h1 class="hero-headline">
+      Arizona can send <strong>{meet.rosterCap}</strong> swimmers.<br />
+      In {lastYearLabel}, it sent <strong>{lastYearSent}</strong>.
+    </h1>
+    <p class="hero-sub">
+      Around <strong>{estimatedEligible}</strong> Arizona swimmers had already swum a qualifying time
+      that year. Most of them never found out. <strong>{unusedSpots} spots went unused.</strong>
+    </p>
+    <a class="button-primary button-lg" href={withBase("/calculator")}>
+      Check if your swimmer qualifies →
+    </a>
+    <p class="hero-note">Takes about ten seconds. No sign-up, nothing saved, nothing sent anywhere.</p>
+  </section>
 
   <div class="card callout">
-    <h2 class="card-heading">Start here: is your swimmer already eligible?</h2>
+    <h2 class="card-heading">Wait — what is Zones?</h2>
     <p>
-      One AAA time in any course is the whole bar. Most families are surprised — a lot of Arizona
-      swimmers are already fast enough and nobody has told them.
+      It's the biggest meet most 14-and-under swimmers in the West can reach. Every LSC in the
+      Western Zone sends a team each summer, and swimmers race for <strong>Arizona</strong> rather
+      than for their club — team caps, team warmups, the whole thing.
     </p>
     <p style="margin-bottom:0">
-      <a class="button-primary" href={withBase("/calculator")}>Check a time →</a>
+      To be eligible, a swimmer needs to be 14 or under on the meet's first day and to have swum
+      <strong>one AAA time</strong>. That's it. One time, in any one event, in any course.
+      <a href={withBase("/faq")}>More about what the week is like →</a>
+    </p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-heading">Why do so many kids miss it?</h2>
+    <p>
+      Mostly because nobody tells them. There's no letter home when a swimmer hits a qualifying time
+      — a kid can swim a AAA cut in March and nobody mentions it until the deadline has passed.
+    </p>
+    <p style="margin-bottom:0">
+      If you think your swimmer might be close, the fastest thing you can do is
+      <strong>check the time yourself</strong>, then ask your coach:
+    </p>
+    <ul class="tight-list ask-list">
+      <li>Is my swimmer eligible for Zones?</li>
+      <li>How does Arizona pick the team?</li>
+      <li>When is the entry deadline?</li>
+    </ul>
+    <p class="note" style="margin-bottom:0">
+      Your coach is your best resource here — they know the process, the deadlines, and your
+      swimmer. This site just helps you know what to ask.
     </p>
   </div>
 
   <div class="tile-grid">
+    <a class="tile" href={withBase("/my-times")}>
+      <span class="tile-title">Track my swimmer</span>
+      <span class="tile-desc">Log best times, watch the gap to AAA close. Stays on your device.</span>
+    </a>
     <a class="tile" href={withBase("/standards")}>
       <span class="tile-title">AAA Standards</span>
       <span class="tile-desc">Every cut, every event, all three courses.</span>
@@ -30,14 +76,10 @@ import { withBase } from "../lib/url";
       <span class="tile-title">Cost &amp; Travel</span>
       <span class="tile-desc">What the week looks like, and what it costs.</span>
     </a>
-    <a class="tile" href={withBase("/about")}>
-      <span class="tile-title">About this site</span>
-      <span class="tile-desc">Who we are — and what we're not.</span>
-    </a>
   </div>
 
   <p class="note" style="margin-top:1.5rem">
-    🚧 The swimmer database, newly-qualified board and Team Builder are still being built. The
-    calculator and standards work today and need no data about you at all.
+    🚧 Still being built: the eligible-swimmer board and the "What It Took" benchmarks. The
+    calculator, tracker and standards all work today.
   </p>
 </BaseLayout>

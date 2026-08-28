@@ -6,5 +6,12 @@
     "errorReportFormUrl": "REPLACE_ME_ERROR_FORM_URL",
     "featureRequestFormUrl": "REPLACE_ME_FEATURE_FORM_URL"
   },
-  "githubIssuesUrl": "https://github.com/luiscova-tech/az-swim-zones/issues"
+  "githubIssuesUrl": "https://github.com/luiscova-tech/az-swim-zones/issues",
+  "headlineStats": {
+    "_readme": "The core argument for this site's existence. These are the site owner's own figures — verify them against the published WAGZ roster and standards before launch, since they are the most quotable numbers here and the ones most likely to be challenged. lastYearSent and rosterCap are checkable facts; estimatedEligible is an estimate and the site labels it as one.",
+    "lastYearSent": 14,
+    "lastYearLabel": "2026",
+    "estimatedEligible": 117,
+    "estimatedEligibleIsEstimate": true
+  }
 }
