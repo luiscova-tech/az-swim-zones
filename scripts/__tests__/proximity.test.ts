@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import standardsData from "../../data/standards.json" with { type: "json" };
 import {
   getAaStandardSeconds,
+  getStandardSeconds,
   proximityTier,
   type StandardsData,
 } from "../lib/standards.js";
@@ -75,29 +76,71 @@ describe("proximityTier with real AA data (the rule we actually want)", () => {
   });
 });
 
-describe("getAaStandardSeconds", () => {
-  it("returns undefined while standards.json carries no AA table", () => {
-    // Documents current state. When the real AA table is added this flips, and
-    // the calculator switches to the exact rule with no other code change.
-    expect(getAaStandardSeconds(standards, "11-12", "50FR", "SCY", "F")).toBeUndefined();
+describe("getAaStandardSeconds (real AA data from the official PDF)", () => {
+  it("reads AA times for every age group and course", () => {
+    expect(getAaStandardSeconds(standards, "11-12", "50FR", "SCY", "F")).toBeCloseTo(28.09);
+    expect(getAaStandardSeconds(standards, "11-12", "50FR", "SCY", "M")).toBeCloseTo(26.99);
+    expect(getAaStandardSeconds(standards, "13-14", "100FR", "LCM", "F")).toBeCloseTo(
+      parseTime("1:06.69")!
+    );
+    expect(getAaStandardSeconds(standards, "10U", "200IM", "SCM", "M")).toBeDefined();
   });
 
-  it("reads an AA time when one is present", () => {
-    const withAa = {
-      ...standards,
-      ageGroups: {
-        ...standards.ageGroups,
-        "11-12": {
-          ...standards.ageGroups["11-12"],
-          events: standards.ageGroups["11-12"].events.map((e) =>
-            e.key === "50FR"
-              ? { ...e, aaStandards: { girls: { SCY: "28.49" }, boys: { SCY: "27.29" } } }
-              : e
-          ),
-        },
-      },
-    } as unknown as StandardsData;
-    expect(getAaStandardSeconds(withAa, "11-12", "50FR", "SCY", "F")).toBeCloseTo(parseTime("28.49")!);
-    expect(getAaStandardSeconds(withAa, "11-12", "50FR", "LCM", "F")).toBeUndefined();
+  it("returns undefined for an event that doesn't exist", () => {
+    expect(getAaStandardSeconds(standards, "11-12", "NOT-REAL", "SCY", "F")).toBeUndefined();
+  });
+});
+
+describe("AA/AAA invariants across the whole standards table", () => {
+  const AGE_GROUPS = ["10U", "11-12", "13-14"] as const;
+  const COURSES = ["LCM", "SCM", "SCY"] as const;
+  const GENDERS = ["F", "M"] as const;
+
+  it("every event in every course and gender has BOTH an AAA and an AA time", () => {
+    let count = 0;
+    for (const ag of AGE_GROUPS) {
+      for (const ev of standards.ageGroups[ag].events) {
+        for (const course of COURSES) {
+          for (const gender of GENDERS) {
+            const aaa = getStandardSeconds(standards, ag, ev.key, course, gender);
+            const aa = getAaStandardSeconds(standards, ag, ev.key, course, gender);
+            expect(aaa, `AAA missing: ${ag} ${ev.key} ${course} ${gender}`).toBeDefined();
+            expect(aa, `AA missing: ${ag} ${ev.key} ${course} ${gender}`).toBeDefined();
+            count++;
+          }
+        }
+      }
+    }
+    expect(count).toBe(252);
+  });
+
+  it("AA is ALWAYS slower than AAA — catches a swapped column in the source table", () => {
+    // The PDF prints girls slowest-to-fastest and boys fastest-to-slowest. If
+    // that mirroring were mis-parsed, AA would come out faster than AAA
+    // somewhere. This is the guard for the whole extraction.
+    for (const ag of AGE_GROUPS) {
+      for (const ev of standards.ageGroups[ag].events) {
+        for (const course of COURSES) {
+          for (const gender of GENDERS) {
+            const aaa = getStandardSeconds(standards, ag, ev.key, course, gender)!;
+            const aa = getAaStandardSeconds(standards, ag, ev.key, course, gender)!;
+            expect(aa, `${ag} ${ev.key} ${course} ${gender}: AA ${aa} must exceed AAA ${aaa}`).toBeGreaterThan(aaa);
+          }
+        }
+      }
+    }
+  });
+
+  it("a swim between AA and AAA is 'close'; anything slower than AA never is", () => {
+    for (const ag of AGE_GROUPS) {
+      for (const ev of standards.ageGroups[ag].events) {
+        const aaa = getStandardSeconds(standards, ag, ev.key, "SCY", "F")!;
+        const aa = getAaStandardSeconds(standards, ag, ev.key, "SCY", "F")!;
+        // Exactly AA -> close. Just slower than AA -> never close.
+        expect(proximityTier(aa, aaa, aa)).toBe("close");
+        expect(proximityTier(aa + 0.01, aaa, aa)).not.toBe("close");
+        expect(proximityTier(aa * 1.5, aaa, aa)).not.toBe("close");
+      }
+    }
   });
 });

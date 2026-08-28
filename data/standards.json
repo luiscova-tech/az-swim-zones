@@ -1,110 +1,1665 @@
 {
-  "_source": "USA Swimming NAG Motivational standards, 2025-2028 quad, 'AAA' combined age group, as published in the 2026 WZAG Championships standards document. Times are stored as display strings ('m:ss.hh' or 'ss.hh') and parsed at load time with the same parser used for meet results — never pre-converted to seconds by hand, and never converted between courses.",
+  "_source": "USA Swimming National Age Group Motivational Standards, 2024-2028 quad. AAA and AA times for the combined age groups, taken from the official USA Swimming standards PDF. Times are stored as display strings (\"m:ss.hh\" or \"ss.hh\") and parsed at load time with the same parser used for meet results — never pre-converted to seconds by hand, and never converted between courses.",
+  "_aaSource": "AA standards extracted from the official USA Swimming 2024-2028 Motivational Standards PDF. The AAA column of that same document was cross-checked against every AAA value already in this file (252 comparisons, 0 mismatches), which validates both the column mapping and the pre-existing AAA data.",
   "ageGroups": {
     "10U": {
       "label": "10 & Under",
       "events": [
-        { "key": "50FR", "stroke": "Free", "displayName": { "LCM": "50 Free", "SCM": "50 Free", "SCY": "50 Free" }, "distance": { "LCM": 50, "SCM": 50, "SCY": 50 },
-          "standards": { "girls": { "LCM": "33.69", "SCM": "32.69", "SCY": "29.59" }, "boys": { "LCM": "32.99", "SCM": "31.69", "SCY": "28.69" } } },
-        { "key": "100FR", "stroke": "Free", "displayName": { "LCM": "100 Free", "SCM": "100 Free", "SCY": "100 Free" }, "distance": { "LCM": 100, "SCM": 100, "SCY": 100 },
-          "standards": { "girls": { "LCM": "1:14.49", "SCM": "1:11.89", "SCY": "1:04.99" }, "boys": { "LCM": "1:13.19", "SCM": "1:10.39", "SCY": "1:03.79" } } },
-        { "key": "200FR", "stroke": "Free", "displayName": { "LCM": "200 Free", "SCM": "200 Free", "SCY": "200 Free" }, "distance": { "LCM": 200, "SCM": 200, "SCY": 200 },
-          "standards": { "girls": { "LCM": "2:43.49", "SCM": "2:38.59", "SCY": "2:23.59" }, "boys": { "LCM": "2:38.89", "SCM": "2:33.59", "SCY": "2:18.99" } } },
-        { "key": "50BK", "stroke": "Back", "displayName": { "LCM": "50 Back", "SCM": "50 Back", "SCY": "50 Back" }, "distance": { "LCM": 50, "SCM": 50, "SCY": 50 },
-          "standards": { "girls": { "LCM": "39.49", "SCM": "37.99", "SCY": "34.39" }, "boys": { "LCM": "38.99", "SCM": "37.59", "SCY": "33.99" } } },
-        { "key": "100BK", "stroke": "Back", "displayName": { "LCM": "100 Back", "SCM": "100 Back", "SCY": "100 Back" }, "distance": { "LCM": 100, "SCM": 100, "SCY": 100 },
-          "standards": { "girls": { "LCM": "1:25.59", "SCM": "1:22.29", "SCY": "1:14.49" }, "boys": { "LCM": "1:24.09", "SCM": "1:20.09", "SCY": "1:12.49" } } },
-        { "key": "50BR", "stroke": "Breast", "displayName": { "LCM": "50 Breast", "SCM": "50 Breast", "SCY": "50 Breast" }, "distance": { "LCM": 50, "SCM": 50, "SCY": 50 },
-          "standards": { "girls": { "LCM": "44.29", "SCM": "42.99", "SCY": "38.89" }, "boys": { "LCM": "43.59", "SCM": "42.29", "SCY": "38.29" } } },
-        { "key": "100BR", "stroke": "Breast", "displayName": { "LCM": "100 Breast", "SCM": "100 Breast", "SCY": "100 Breast" }, "distance": { "LCM": 100, "SCM": 100, "SCY": 100 },
-          "standards": { "girls": { "LCM": "1:38.09", "SCM": "1:33.59", "SCY": "1:24.69" }, "boys": { "LCM": "1:36.29", "SCM": "1:31.39", "SCY": "1:22.69" } } },
-        { "key": "50FL", "stroke": "Fly", "displayName": { "LCM": "50 Fly", "SCM": "50 Fly", "SCY": "50 Fly" }, "distance": { "LCM": 50, "SCM": 50, "SCY": 50 },
-          "standards": { "girls": { "LCM": "37.29", "SCM": "36.69", "SCY": "33.19" }, "boys": { "LCM": "36.59", "SCM": "35.99", "SCY": "32.59" } } },
-        { "key": "100FL", "stroke": "Fly", "displayName": { "LCM": "100 Fly", "SCM": "100 Fly", "SCY": "100 Fly" }, "distance": { "LCM": 100, "SCM": 100, "SCY": 100 },
-          "standards": { "girls": { "LCM": "1:26.39", "SCM": "1:23.89", "SCY": "1:15.99" }, "boys": { "LCM": "1:25.09", "SCM": "1:22.49", "SCY": "1:14.59" } } },
-        { "key": "200IM", "stroke": "IM", "displayName": { "LCM": "200 IM", "SCM": "200 IM", "SCY": "200 IM" }, "distance": { "LCM": 200, "SCM": 200, "SCY": 200 },
-          "standards": { "girls": { "LCM": "3:04.19", "SCM": "2:56.79", "SCY": "2:39.99" }, "boys": { "LCM": "3:00.79", "SCM": "2:55.09", "SCY": "2:38.39" } } }
+        {
+          "key": "50FR",
+          "stroke": "Free",
+          "displayName": {
+            "LCM": "50 Free",
+            "SCM": "50 Free",
+            "SCY": "50 Free"
+          },
+          "distance": {
+            "LCM": 50,
+            "SCM": 50,
+            "SCY": 50
+          },
+          "standards": {
+            "girls": {
+              "LCM": "33.69",
+              "SCM": "32.69",
+              "SCY": "29.59"
+            },
+            "boys": {
+              "LCM": "32.99",
+              "SCM": "31.69",
+              "SCY": "28.69"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "35.09",
+              "SCM": "34.09",
+              "SCY": "30.89"
+            },
+            "boys": {
+              "LCM": "34.39",
+              "SCM": "32.99",
+              "SCY": "29.89"
+            }
+          }
+        },
+        {
+          "key": "100FR",
+          "stroke": "Free",
+          "displayName": {
+            "LCM": "100 Free",
+            "SCM": "100 Free",
+            "SCY": "100 Free"
+          },
+          "distance": {
+            "LCM": 100,
+            "SCM": 100,
+            "SCY": 100
+          },
+          "standards": {
+            "girls": {
+              "LCM": "1:14.49",
+              "SCM": "1:11.89",
+              "SCY": "1:04.99"
+            },
+            "boys": {
+              "LCM": "1:13.19",
+              "SCM": "1:10.39",
+              "SCY": "1:03.79"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "1:18.19",
+              "SCM": "1:15.39",
+              "SCY": "1:08.29"
+            },
+            "boys": {
+              "LCM": "1:16.69",
+              "SCM": "1:13.79",
+              "SCY": "1:06.79"
+            }
+          }
+        },
+        {
+          "key": "200FR",
+          "stroke": "Free",
+          "displayName": {
+            "LCM": "200 Free",
+            "SCM": "200 Free",
+            "SCY": "200 Free"
+          },
+          "distance": {
+            "LCM": 200,
+            "SCM": 200,
+            "SCY": 200
+          },
+          "standards": {
+            "girls": {
+              "LCM": "2:43.49",
+              "SCM": "2:38.59",
+              "SCY": "2:23.59"
+            },
+            "boys": {
+              "LCM": "2:38.89",
+              "SCM": "2:33.59",
+              "SCY": "2:18.99"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "2:51.99",
+              "SCM": "2:46.79",
+              "SCY": "2:30.99"
+            },
+            "boys": {
+              "LCM": "2:46.09",
+              "SCM": "2:40.59",
+              "SCY": "2:25.29"
+            }
+          }
+        },
+        {
+          "key": "50BK",
+          "stroke": "Back",
+          "displayName": {
+            "LCM": "50 Back",
+            "SCM": "50 Back",
+            "SCY": "50 Back"
+          },
+          "distance": {
+            "LCM": 50,
+            "SCM": 50,
+            "SCY": 50
+          },
+          "standards": {
+            "girls": {
+              "LCM": "39.49",
+              "SCM": "37.99",
+              "SCY": "34.39"
+            },
+            "boys": {
+              "LCM": "38.99",
+              "SCM": "37.59",
+              "SCY": "33.99"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "41.59",
+              "SCM": "39.99",
+              "SCY": "36.19"
+            },
+            "boys": {
+              "LCM": "41.09",
+              "SCM": "39.59",
+              "SCY": "35.79"
+            }
+          }
+        },
+        {
+          "key": "100BK",
+          "stroke": "Back",
+          "displayName": {
+            "LCM": "100 Back",
+            "SCM": "100 Back",
+            "SCY": "100 Back"
+          },
+          "distance": {
+            "LCM": 100,
+            "SCM": 100,
+            "SCY": 100
+          },
+          "standards": {
+            "girls": {
+              "LCM": "1:25.59",
+              "SCM": "1:22.29",
+              "SCY": "1:14.49"
+            },
+            "boys": {
+              "LCM": "1:24.09",
+              "SCM": "1:20.09",
+              "SCY": "1:12.49"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "1:30.09",
+              "SCM": "1:26.59",
+              "SCY": "1:18.39"
+            },
+            "boys": {
+              "LCM": "1:28.19",
+              "SCM": "1:23.99",
+              "SCY": "1:16.09"
+            }
+          }
+        },
+        {
+          "key": "50BR",
+          "stroke": "Breast",
+          "displayName": {
+            "LCM": "50 Breast",
+            "SCM": "50 Breast",
+            "SCY": "50 Breast"
+          },
+          "distance": {
+            "LCM": 50,
+            "SCM": 50,
+            "SCY": 50
+          },
+          "standards": {
+            "girls": {
+              "LCM": "44.29",
+              "SCM": "42.99",
+              "SCY": "38.89"
+            },
+            "boys": {
+              "LCM": "43.59",
+              "SCM": "42.29",
+              "SCY": "38.29"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "46.49",
+              "SCM": "45.09",
+              "SCY": "40.89"
+            },
+            "boys": {
+              "LCM": "45.79",
+              "SCM": "44.39",
+              "SCY": "40.19"
+            }
+          }
+        },
+        {
+          "key": "100BR",
+          "stroke": "Breast",
+          "displayName": {
+            "LCM": "100 Breast",
+            "SCM": "100 Breast",
+            "SCY": "100 Breast"
+          },
+          "distance": {
+            "LCM": 100,
+            "SCM": 100,
+            "SCY": 100
+          },
+          "standards": {
+            "girls": {
+              "LCM": "1:38.09",
+              "SCM": "1:33.59",
+              "SCY": "1:24.69"
+            },
+            "boys": {
+              "LCM": "1:36.29",
+              "SCM": "1:31.39",
+              "SCY": "1:22.69"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "1:43.29",
+              "SCM": "1:38.49",
+              "SCY": "1:29.09"
+            },
+            "boys": {
+              "LCM": "1:40.89",
+              "SCM": "1:35.69",
+              "SCY": "1:26.59"
+            }
+          }
+        },
+        {
+          "key": "50FL",
+          "stroke": "Fly",
+          "displayName": {
+            "LCM": "50 Fly",
+            "SCM": "50 Fly",
+            "SCY": "50 Fly"
+          },
+          "distance": {
+            "LCM": 50,
+            "SCM": 50,
+            "SCY": 50
+          },
+          "standards": {
+            "girls": {
+              "LCM": "37.29",
+              "SCM": "36.69",
+              "SCY": "33.19"
+            },
+            "boys": {
+              "LCM": "36.59",
+              "SCM": "35.99",
+              "SCY": "32.59"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "39.49",
+              "SCM": "38.79",
+              "SCY": "35.09"
+            },
+            "boys": {
+              "LCM": "38.59",
+              "SCM": "37.89",
+              "SCY": "34.29"
+            }
+          }
+        },
+        {
+          "key": "100FL",
+          "stroke": "Fly",
+          "displayName": {
+            "LCM": "100 Fly",
+            "SCM": "100 Fly",
+            "SCY": "100 Fly"
+          },
+          "distance": {
+            "LCM": 100,
+            "SCM": 100,
+            "SCY": 100
+          },
+          "standards": {
+            "girls": {
+              "LCM": "1:26.39",
+              "SCM": "1:23.89",
+              "SCY": "1:15.99"
+            },
+            "boys": {
+              "LCM": "1:25.09",
+              "SCM": "1:22.49",
+              "SCY": "1:14.59"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "1:32.19",
+              "SCM": "1:29.49",
+              "SCY": "1:20.99"
+            },
+            "boys": {
+              "LCM": "1:30.69",
+              "SCM": "1:27.79",
+              "SCY": "1:19.49"
+            }
+          }
+        },
+        {
+          "key": "200IM",
+          "stroke": "IM",
+          "displayName": {
+            "LCM": "200 IM",
+            "SCM": "200 IM",
+            "SCY": "200 IM"
+          },
+          "distance": {
+            "LCM": 200,
+            "SCM": 200,
+            "SCY": 200
+          },
+          "standards": {
+            "girls": {
+              "LCM": "3:04.19",
+              "SCM": "2:56.79",
+              "SCY": "2:39.99"
+            },
+            "boys": {
+              "LCM": "3:00.79",
+              "SCM": "2:55.09",
+              "SCY": "2:38.39"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "3:13.09",
+              "SCM": "3:05.29",
+              "SCY": "2:47.69"
+            },
+            "boys": {
+              "LCM": "3:09.39",
+              "SCM": "3:03.39",
+              "SCY": "2:45.89"
+            }
+          }
+        }
       ]
     },
     "11-12": {
       "label": "11-12",
       "events": [
-        { "key": "50FR", "stroke": "Free", "displayName": { "LCM": "50 Free", "SCM": "50 Free", "SCY": "50 Free" }, "distance": { "LCM": 50, "SCM": 50, "SCY": 50 },
-          "standards": { "girls": { "LCM": "30.49", "SCM": "29.79", "SCY": "26.99" }, "boys": { "LCM": "29.39", "SCM": "28.49", "SCY": "25.79" } } },
-        { "key": "100FR", "stroke": "Free", "displayName": { "LCM": "100 Free", "SCM": "100 Free", "SCY": "100 Free" }, "distance": { "LCM": 100, "SCM": 100, "SCY": 100 },
-          "standards": { "girls": { "LCM": "1:07.19", "SCM": "1:04.89", "SCY": "58.69" }, "boys": { "LCM": "1:04.49", "SCM": "1:02.09", "SCY": "56.19" } } },
-        { "key": "200FR", "stroke": "Free", "displayName": { "LCM": "200 Free", "SCM": "200 Free", "SCY": "200 Free" }, "distance": { "LCM": 200, "SCM": 200, "SCY": 200 },
-          "standards": { "girls": { "LCM": "2:26.49", "SCM": "2:21.09", "SCY": "2:07.69" }, "boys": { "LCM": "2:20.79", "SCM": "2:15.49", "SCY": "2:02.59" } } },
-        { "key": "400FR", "stroke": "Free", "displayName": { "LCM": "400 Free", "SCM": "400 Free", "SCY": "500 Free" }, "distance": { "LCM": 400, "SCM": 400, "SCY": 500 },
-          "standards": { "girls": { "LCM": "5:08.69", "SCM": "5:00.39", "SCY": "5:43.29" }, "boys": { "LCM": "4:59.49", "SCM": "4:48.69", "SCY": "5:29.99" } } },
-        { "key": "50BK", "stroke": "Back", "displayName": { "LCM": "50 Back", "SCM": "50 Back", "SCY": "50 Back" }, "distance": { "LCM": 50, "SCM": 50, "SCY": 50 },
-          "standards": { "girls": { "LCM": "35.19", "SCM": "33.59", "SCY": "30.49" }, "boys": { "LCM": "34.29", "SCM": "32.79", "SCY": "29.69" } } },
-        { "key": "100BK", "stroke": "Back", "displayName": { "LCM": "100 Back", "SCM": "100 Back", "SCY": "100 Back" }, "distance": { "LCM": 100, "SCM": 100, "SCY": 100 },
-          "standards": { "girls": { "LCM": "1:16.89", "SCM": "1:13.09", "SCY": "1:06.19" }, "boys": { "LCM": "1:14.29", "SCM": "1:09.39", "SCY": "1:02.79" } } },
-        { "key": "200BK", "stroke": "Back", "displayName": { "LCM": "200 Back", "SCM": "200 Back", "SCY": "200 Back" }, "distance": { "LCM": 200, "SCM": 200, "SCY": 200 },
-          "standards": { "girls": { "LCM": "2:43.49", "SCM": "2:35.79", "SCY": "2:20.99" }, "boys": { "LCM": "2:39.49", "SCM": "2:30.09", "SCY": "2:15.89" } } },
-        { "key": "50BR", "stroke": "Breast", "displayName": { "LCM": "50 Breast", "SCM": "50 Breast", "SCY": "50 Breast" }, "distance": { "LCM": 50, "SCM": 50, "SCY": 50 },
-          "standards": { "girls": { "LCM": "39.09", "SCM": "38.19", "SCY": "34.59" }, "boys": { "LCM": "38.09", "SCM": "36.69", "SCY": "33.29" } } },
-        { "key": "100BR", "stroke": "Breast", "displayName": { "LCM": "100 Breast", "SCM": "100 Breast", "SCY": "100 Breast" }, "distance": { "LCM": 100, "SCM": 100, "SCY": 100 },
-          "standards": { "girls": { "LCM": "1:25.89", "SCM": "1:22.99", "SCY": "1:15.09" }, "boys": { "LCM": "1:23.09", "SCM": "1:18.89", "SCY": "1:11.39" } } },
-        { "key": "200BR", "stroke": "Breast", "displayName": { "LCM": "200 Breast", "SCM": "200 Breast", "SCY": "200 Breast" }, "distance": { "LCM": 200, "SCM": 200, "SCY": 200 },
-          "standards": { "girls": { "LCM": "3:06.09", "SCM": "2:58.59", "SCY": "2:41.69" }, "boys": { "LCM": "2:59.09", "SCM": "2:50.59", "SCY": "2:34.39" } } },
-        { "key": "50FL", "stroke": "Fly", "displayName": { "LCM": "50 Fly", "SCM": "50 Fly", "SCY": "50 Fly" }, "distance": { "LCM": 50, "SCM": 50, "SCY": 50 },
-          "standards": { "girls": { "LCM": "32.89", "SCM": "31.99", "SCY": "28.99" }, "boys": { "LCM": "31.99", "SCM": "31.19", "SCY": "28.19" } } },
-        { "key": "100FL", "stroke": "Fly", "displayName": { "LCM": "100 Fly", "SCM": "100 Fly", "SCY": "100 Fly" }, "distance": { "LCM": 100, "SCM": 100, "SCY": 100 },
-          "standards": { "girls": { "LCM": "1:14.79", "SCM": "1:12.09", "SCY": "1:05.19" }, "boys": { "LCM": "1:11.69", "SCM": "1:08.99", "SCY": "1:02.49" } } },
-        { "key": "200FL", "stroke": "Fly", "displayName": { "LCM": "200 Fly", "SCM": "200 Fly", "SCY": "200 Fly" }, "distance": { "LCM": 200, "SCM": 200, "SCY": 200 },
-          "standards": { "girls": { "LCM": "2:45.89", "SCM": "2:39.19", "SCY": "2:24.09" }, "boys": { "LCM": "2:40.89", "SCM": "2:33.29", "SCY": "2:18.69" } } },
-        { "key": "200IM", "stroke": "IM", "displayName": { "LCM": "200 IM", "SCM": "200 IM", "SCY": "200 IM" }, "distance": { "LCM": 200, "SCM": 200, "SCY": 200 },
-          "standards": { "girls": { "LCM": "2:45.49", "SCM": "2:39.59", "SCY": "2:24.49" }, "boys": { "LCM": "2:38.29", "SCM": "2:33.39", "SCY": "2:18.79" } } },
-        { "key": "400IM", "stroke": "IM", "displayName": { "LCM": "400 IM", "SCM": "400 IM", "SCY": "400 IM" }, "distance": { "LCM": 400, "SCM": 400, "SCY": 400 },
-          "standards": { "girls": { "LCM": "5:52.69", "SCM": "5:40.09", "SCY": "5:07.79" }, "boys": { "LCM": "5:44.09", "SCM": "5:27.39", "SCY": "4:56.29" } } }
+        {
+          "key": "50FR",
+          "stroke": "Free",
+          "displayName": {
+            "LCM": "50 Free",
+            "SCM": "50 Free",
+            "SCY": "50 Free"
+          },
+          "distance": {
+            "LCM": 50,
+            "SCM": 50,
+            "SCY": 50
+          },
+          "standards": {
+            "girls": {
+              "LCM": "30.49",
+              "SCM": "29.79",
+              "SCY": "26.99"
+            },
+            "boys": {
+              "LCM": "29.39",
+              "SCM": "28.49",
+              "SCY": "25.79"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "31.89",
+              "SCM": "31.09",
+              "SCY": "28.09"
+            },
+            "boys": {
+              "LCM": "30.69",
+              "SCM": "29.79",
+              "SCY": "26.99"
+            }
+          }
+        },
+        {
+          "key": "100FR",
+          "stroke": "Free",
+          "displayName": {
+            "LCM": "100 Free",
+            "SCM": "100 Free",
+            "SCY": "100 Free"
+          },
+          "distance": {
+            "LCM": 100,
+            "SCM": 100,
+            "SCY": 100
+          },
+          "standards": {
+            "girls": {
+              "LCM": "1:07.19",
+              "SCM": "1:04.89",
+              "SCY": "58.69"
+            },
+            "boys": {
+              "LCM": "1:04.49",
+              "SCM": "1:02.09",
+              "SCY": "56.19"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "1:10.29",
+              "SCM": "1:07.79",
+              "SCY": "1:01.39"
+            },
+            "boys": {
+              "LCM": "1:07.49",
+              "SCM": "1:04.89",
+              "SCY": "58.69"
+            }
+          }
+        },
+        {
+          "key": "200FR",
+          "stroke": "Free",
+          "displayName": {
+            "LCM": "200 Free",
+            "SCM": "200 Free",
+            "SCY": "200 Free"
+          },
+          "distance": {
+            "LCM": 200,
+            "SCM": 200,
+            "SCY": 200
+          },
+          "standards": {
+            "girls": {
+              "LCM": "2:26.49",
+              "SCM": "2:21.09",
+              "SCY": "2:07.69"
+            },
+            "boys": {
+              "LCM": "2:20.79",
+              "SCM": "2:15.49",
+              "SCY": "2:02.59"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "2:33.09",
+              "SCM": "2:27.59",
+              "SCY": "2:13.49"
+            },
+            "boys": {
+              "LCM": "2:27.19",
+              "SCM": "2:21.59",
+              "SCY": "2:08.19"
+            }
+          }
+        },
+        {
+          "key": "400FR",
+          "stroke": "Free",
+          "displayName": {
+            "LCM": "400 Free",
+            "SCM": "400 Free",
+            "SCY": "500 Free"
+          },
+          "distance": {
+            "LCM": 400,
+            "SCM": 400,
+            "SCY": 500
+          },
+          "standards": {
+            "girls": {
+              "LCM": "5:08.69",
+              "SCM": "5:00.39",
+              "SCY": "5:43.29"
+            },
+            "boys": {
+              "LCM": "4:59.49",
+              "SCM": "4:48.69",
+              "SCY": "5:29.99"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "5:22.79",
+              "SCM": "5:14.09",
+              "SCY": "5:58.89"
+            },
+            "boys": {
+              "LCM": "5:13.09",
+              "SCM": "5:01.79",
+              "SCY": "5:44.99"
+            }
+          }
+        },
+        {
+          "key": "50BK",
+          "stroke": "Back",
+          "displayName": {
+            "LCM": "50 Back",
+            "SCM": "50 Back",
+            "SCY": "50 Back"
+          },
+          "distance": {
+            "LCM": 50,
+            "SCM": 50,
+            "SCY": 50
+          },
+          "standards": {
+            "girls": {
+              "LCM": "35.19",
+              "SCM": "33.59",
+              "SCY": "30.49"
+            },
+            "boys": {
+              "LCM": "34.29",
+              "SCM": "32.79",
+              "SCY": "29.69"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "36.79",
+              "SCM": "35.19",
+              "SCY": "31.79"
+            },
+            "boys": {
+              "LCM": "35.99",
+              "SCM": "34.49",
+              "SCY": "31.19"
+            }
+          }
+        },
+        {
+          "key": "100BK",
+          "stroke": "Back",
+          "displayName": {
+            "LCM": "100 Back",
+            "SCM": "100 Back",
+            "SCY": "100 Back"
+          },
+          "distance": {
+            "LCM": 100,
+            "SCM": 100,
+            "SCY": 100
+          },
+          "standards": {
+            "girls": {
+              "LCM": "1:16.89",
+              "SCM": "1:13.09",
+              "SCY": "1:06.19"
+            },
+            "boys": {
+              "LCM": "1:14.29",
+              "SCM": "1:09.39",
+              "SCY": "1:02.79"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "1:20.79",
+              "SCM": "1:16.89",
+              "SCY": "1:09.59"
+            },
+            "boys": {
+              "LCM": "1:18.09",
+              "SCM": "1:12.89",
+              "SCY": "1:05.99"
+            }
+          }
+        },
+        {
+          "key": "200BK",
+          "stroke": "Back",
+          "displayName": {
+            "LCM": "200 Back",
+            "SCM": "200 Back",
+            "SCY": "200 Back"
+          },
+          "distance": {
+            "LCM": 200,
+            "SCM": 200,
+            "SCY": 200
+          },
+          "standards": {
+            "girls": {
+              "LCM": "2:43.49",
+              "SCM": "2:35.79",
+              "SCY": "2:20.99"
+            },
+            "boys": {
+              "LCM": "2:39.49",
+              "SCM": "2:30.09",
+              "SCY": "2:15.89"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "2:50.99",
+              "SCM": "2:42.89",
+              "SCY": "2:27.49"
+            },
+            "boys": {
+              "LCM": "2:46.69",
+              "SCM": "2:36.89",
+              "SCY": "2:21.99"
+            }
+          }
+        },
+        {
+          "key": "50BR",
+          "stroke": "Breast",
+          "displayName": {
+            "LCM": "50 Breast",
+            "SCM": "50 Breast",
+            "SCY": "50 Breast"
+          },
+          "distance": {
+            "LCM": 50,
+            "SCM": 50,
+            "SCY": 50
+          },
+          "standards": {
+            "girls": {
+              "LCM": "39.09",
+              "SCM": "38.19",
+              "SCY": "34.59"
+            },
+            "boys": {
+              "LCM": "38.09",
+              "SCM": "36.69",
+              "SCY": "33.29"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "40.89",
+              "SCM": "39.89",
+              "SCY": "36.19"
+            },
+            "boys": {
+              "LCM": "39.99",
+              "SCM": "38.59",
+              "SCY": "34.99"
+            }
+          }
+        },
+        {
+          "key": "100BR",
+          "stroke": "Breast",
+          "displayName": {
+            "LCM": "100 Breast",
+            "SCM": "100 Breast",
+            "SCY": "100 Breast"
+          },
+          "distance": {
+            "LCM": 100,
+            "SCM": 100,
+            "SCY": 100
+          },
+          "standards": {
+            "girls": {
+              "LCM": "1:25.89",
+              "SCM": "1:22.99",
+              "SCY": "1:15.09"
+            },
+            "boys": {
+              "LCM": "1:23.09",
+              "SCM": "1:18.89",
+              "SCY": "1:11.39"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "1:29.99",
+              "SCM": "1:26.89",
+              "SCY": "1:18.59"
+            },
+            "boys": {
+              "LCM": "1:27.19",
+              "SCM": "1:22.79",
+              "SCY": "1:14.89"
+            }
+          }
+        },
+        {
+          "key": "200BR",
+          "stroke": "Breast",
+          "displayName": {
+            "LCM": "200 Breast",
+            "SCM": "200 Breast",
+            "SCY": "200 Breast"
+          },
+          "distance": {
+            "LCM": 200,
+            "SCM": 200,
+            "SCY": 200
+          },
+          "standards": {
+            "girls": {
+              "LCM": "3:06.09",
+              "SCM": "2:58.59",
+              "SCY": "2:41.69"
+            },
+            "boys": {
+              "LCM": "2:59.09",
+              "SCM": "2:50.59",
+              "SCY": "2:34.39"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "3:14.49",
+              "SCM": "3:06.69",
+              "SCY": "2:48.99"
+            },
+            "boys": {
+              "LCM": "3:07.19",
+              "SCM": "2:58.29",
+              "SCY": "2:41.39"
+            }
+          }
+        },
+        {
+          "key": "50FL",
+          "stroke": "Fly",
+          "displayName": {
+            "LCM": "50 Fly",
+            "SCM": "50 Fly",
+            "SCY": "50 Fly"
+          },
+          "distance": {
+            "LCM": 50,
+            "SCM": 50,
+            "SCY": 50
+          },
+          "standards": {
+            "girls": {
+              "LCM": "32.89",
+              "SCM": "31.99",
+              "SCY": "28.99"
+            },
+            "boys": {
+              "LCM": "31.99",
+              "SCM": "31.19",
+              "SCY": "28.19"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "34.29",
+              "SCM": "33.49",
+              "SCY": "30.29"
+            },
+            "boys": {
+              "LCM": "33.59",
+              "SCM": "32.79",
+              "SCY": "29.69"
+            }
+          }
+        },
+        {
+          "key": "100FL",
+          "stroke": "Fly",
+          "displayName": {
+            "LCM": "100 Fly",
+            "SCM": "100 Fly",
+            "SCY": "100 Fly"
+          },
+          "distance": {
+            "LCM": 100,
+            "SCM": 100,
+            "SCY": 100
+          },
+          "standards": {
+            "girls": {
+              "LCM": "1:14.79",
+              "SCM": "1:12.09",
+              "SCY": "1:05.19"
+            },
+            "boys": {
+              "LCM": "1:11.69",
+              "SCM": "1:08.99",
+              "SCY": "1:02.49"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "1:18.69",
+              "SCM": "1:15.79",
+              "SCY": "1:08.59"
+            },
+            "boys": {
+              "LCM": "1:15.59",
+              "SCM": "1:12.79",
+              "SCY": "1:05.89"
+            }
+          }
+        },
+        {
+          "key": "200FL",
+          "stroke": "Fly",
+          "displayName": {
+            "LCM": "200 Fly",
+            "SCM": "200 Fly",
+            "SCY": "200 Fly"
+          },
+          "distance": {
+            "LCM": 200,
+            "SCM": 200,
+            "SCY": 200
+          },
+          "standards": {
+            "girls": {
+              "LCM": "2:45.89",
+              "SCM": "2:39.19",
+              "SCY": "2:24.09"
+            },
+            "boys": {
+              "LCM": "2:40.89",
+              "SCM": "2:33.29",
+              "SCY": "2:18.69"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "2:53.39",
+              "SCM": "2:46.49",
+              "SCY": "2:30.59"
+            },
+            "boys": {
+              "LCM": "2:48.29",
+              "SCM": "2:40.29",
+              "SCY": "2:24.99"
+            }
+          }
+        },
+        {
+          "key": "200IM",
+          "stroke": "IM",
+          "displayName": {
+            "LCM": "200 IM",
+            "SCM": "200 IM",
+            "SCY": "200 IM"
+          },
+          "distance": {
+            "LCM": 200,
+            "SCM": 200,
+            "SCY": 200
+          },
+          "standards": {
+            "girls": {
+              "LCM": "2:45.49",
+              "SCM": "2:39.59",
+              "SCY": "2:24.49"
+            },
+            "boys": {
+              "LCM": "2:38.29",
+              "SCM": "2:33.39",
+              "SCY": "2:18.79"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "2:52.99",
+              "SCM": "2:46.89",
+              "SCY": "2:30.99"
+            },
+            "boys": {
+              "LCM": "2:45.99",
+              "SCM": "2:40.89",
+              "SCY": "2:25.59"
+            }
+          }
+        },
+        {
+          "key": "400IM",
+          "stroke": "IM",
+          "displayName": {
+            "LCM": "400 IM",
+            "SCM": "400 IM",
+            "SCY": "400 IM"
+          },
+          "distance": {
+            "LCM": 400,
+            "SCM": 400,
+            "SCY": 400
+          },
+          "standards": {
+            "girls": {
+              "LCM": "5:52.69",
+              "SCM": "5:40.09",
+              "SCY": "5:07.79"
+            },
+            "boys": {
+              "LCM": "5:44.09",
+              "SCM": "5:27.39",
+              "SCY": "4:56.29"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "6:08.69",
+              "SCM": "5:55.59",
+              "SCY": "5:21.79"
+            },
+            "boys": {
+              "LCM": "5:59.69",
+              "SCM": "5:42.29",
+              "SCY": "5:09.79"
+            }
+          }
+        }
       ]
     },
     "13-14": {
       "label": "13-14",
       "events": [
-        { "key": "50FR", "stroke": "Free", "displayName": { "LCM": "50 Free", "SCM": "50 Free", "SCY": "50 Free" }, "distance": { "LCM": 50, "SCM": 50, "SCY": 50 },
-          "standards": { "girls": { "LCM": "29.29", "SCM": "28.29", "SCY": "25.59" }, "boys": { "LCM": "26.89", "SCM": "25.89", "SCY": "23.49" } } },
-        { "key": "100FR", "stroke": "Free", "displayName": { "LCM": "100 Free", "SCM": "100 Free", "SCY": "100 Free" }, "distance": { "LCM": 100, "SCM": 100, "SCY": 100 },
-          "standards": { "girls": { "LCM": "1:03.79", "SCM": "1:01.69", "SCY": "55.79" }, "boys": { "LCM": "58.99", "SCM": "56.39", "SCY": "51.09" } } },
-        { "key": "200FR", "stroke": "Free", "displayName": { "LCM": "200 Free", "SCM": "200 Free", "SCY": "200 Free" }, "distance": { "LCM": 200, "SCM": 200, "SCY": 200 },
-          "standards": { "girls": { "LCM": "2:17.79", "SCM": "2:13.39", "SCY": "2:00.69" }, "boys": { "LCM": "2:08.89", "SCM": "2:03.69", "SCY": "1:51.99" } } },
-        { "key": "400FR", "stroke": "Free", "displayName": { "LCM": "400 Free", "SCM": "400 Free", "SCY": "500 Free" }, "distance": { "LCM": 400, "SCM": 400, "SCY": 500 },
-          "standards": { "girls": { "LCM": "4:49.19", "SCM": "4:43.39", "SCY": "5:23.89" }, "boys": { "LCM": "4:33.79", "SCM": "4:25.19", "SCY": "5:03.09" } } },
-        { "key": "800FR", "stroke": "Free", "displayName": { "LCM": "800 Free", "SCM": "800 Free", "SCY": "1000 Free" }, "distance": { "LCM": 800, "SCM": 800, "SCY": 1000 },
-          "standards": { "girls": { "LCM": "10:01.49", "SCM": "9:45.09", "SCY": "11:08.69" }, "boys": { "LCM": "9:26.19", "SCM": "9:08.59", "SCY": "10:26.99" } } },
-        { "key": "1500FR", "stroke": "Free", "displayName": { "LCM": "1500 Free", "SCM": "1500 Free", "SCY": "1650 Free" }, "distance": { "LCM": 1500, "SCM": 1500, "SCY": 1650 },
-          "standards": { "girls": { "LCM": "19:13.69", "SCM": "18:31.29", "SCY": "18:37.99" }, "boys": { "LCM": "18:07.89", "SCM": "17:28.79", "SCY": "17:35.19" } } },
-        { "key": "50BK", "stroke": "Back", "displayName": { "LCM": "50 Back", "SCM": "50 Back", "SCY": "50 Back" }, "distance": { "LCM": 50, "SCM": 50, "SCY": 50 },
-          "standards": { "girls": { "LCM": "33.49", "SCM": "31.49", "SCY": "28.49" }, "boys": { "LCM": "31.09", "SCM": "29.19", "SCY": "26.49" } } },
-        { "key": "100BK", "stroke": "Back", "displayName": { "LCM": "100 Back", "SCM": "100 Back", "SCY": "100 Back" }, "distance": { "LCM": 100, "SCM": 100, "SCY": 100 },
-          "standards": { "girls": { "LCM": "1:10.49", "SCM": "1:06.79", "SCY": "1:00.49" }, "boys": { "LCM": "1:05.79", "SCM": "1:01.89", "SCY": "55.99" } } },
-        { "key": "200BK", "stroke": "Back", "displayName": { "LCM": "200 Back", "SCM": "200 Back", "SCY": "200 Back" }, "distance": { "LCM": 200, "SCM": 200, "SCY": 200 },
-          "standards": { "girls": { "LCM": "2:31.89", "SCM": "2:24.49", "SCY": "2:10.69" }, "boys": { "LCM": "2:22.79", "SCM": "2:14.29", "SCY": "2:01.59" } } },
-        { "key": "50BR", "stroke": "Breast", "displayName": { "LCM": "50 Breast", "SCM": "50 Breast", "SCY": "50 Breast" }, "distance": { "LCM": 50, "SCM": 50, "SCY": 50 },
-          "standards": { "girls": { "LCM": "37.59", "SCM": "36.49", "SCY": "33.09" }, "boys": { "LCM": "34.59", "SCM": "33.49", "SCY": "30.29" } } },
-        { "key": "100BR", "stroke": "Breast", "displayName": { "LCM": "100 Breast", "SCM": "100 Breast", "SCY": "100 Breast" }, "distance": { "LCM": 100, "SCM": 100, "SCY": 100 },
-          "standards": { "girls": { "LCM": "1:20.39", "SCM": "1:16.99", "SCY": "1:09.69" }, "boys": { "LCM": "1:13.69", "SCM": "1:09.89", "SCY": "1:03.29" } } },
-        { "key": "200BR", "stroke": "Breast", "displayName": { "LCM": "200 Breast", "SCM": "200 Breast", "SCY": "200 Breast" }, "distance": { "LCM": 200, "SCM": 200, "SCY": 200 },
-          "standards": { "girls": { "LCM": "2:53.09", "SCM": "2:45.89", "SCY": "2:30.09" }, "boys": { "LCM": "2:39.39", "SCM": "2:31.79", "SCY": "2:17.39" } } },
-        { "key": "50FL", "stroke": "Fly", "displayName": { "LCM": "50 Fly", "SCM": "50 Fly", "SCY": "50 Fly" }, "distance": { "LCM": 50, "SCM": 50, "SCY": 50 },
-          "standards": { "girls": { "LCM": "31.39", "SCM": "31.09", "SCY": "28.19" }, "boys": { "LCM": "29.29", "SCM": "28.79", "SCY": "26.09" } } },
-        { "key": "100FL", "stroke": "Fly", "displayName": { "LCM": "100 Fly", "SCM": "100 Fly", "SCY": "100 Fly" }, "distance": { "LCM": 100, "SCM": 100, "SCY": 100 },
-          "standards": { "girls": { "LCM": "1:08.59", "SCM": "1:06.69", "SCY": "1:00.39" }, "boys": { "LCM": "1:03.09", "SCM": "1:01.19", "SCY": "55.39" } } },
-        { "key": "200FL", "stroke": "Fly", "displayName": { "LCM": "200 Fly", "SCM": "200 Fly", "SCY": "200 Fly" }, "distance": { "LCM": 200, "SCM": 200, "SCY": 200 },
-          "standards": { "girls": { "LCM": "2:33.79", "SCM": "2:28.59", "SCY": "2:14.49" }, "boys": { "LCM": "2:21.19", "SCM": "2:16.19", "SCY": "2:03.19" } } },
-        { "key": "200IM", "stroke": "IM", "displayName": { "LCM": "200 IM", "SCM": "200 IM", "SCY": "200 IM" }, "distance": { "LCM": 200, "SCM": 200, "SCY": 200 },
-          "standards": { "girls": { "LCM": "2:34.89", "SCM": "2:29.09", "SCY": "2:14.99" }, "boys": { "LCM": "2:23.69", "SCM": "2:17.09", "SCY": "2:04.09" } } },
-        { "key": "400IM", "stroke": "IM", "displayName": { "LCM": "400 IM", "SCM": "400 IM", "SCY": "400 IM" }, "distance": { "LCM": 400, "SCM": 400, "SCY": 400 },
-          "standards": { "girls": { "LCM": "5:28.39", "SCM": "5:17.59", "SCY": "4:47.39" }, "boys": { "LCM": "5:06.99", "SCM": "4:53.19", "SCY": "4:25.39" } } }
+        {
+          "key": "50FR",
+          "stroke": "Free",
+          "displayName": {
+            "LCM": "50 Free",
+            "SCM": "50 Free",
+            "SCY": "50 Free"
+          },
+          "distance": {
+            "LCM": 50,
+            "SCM": 50,
+            "SCY": 50
+          },
+          "standards": {
+            "girls": {
+              "LCM": "29.29",
+              "SCM": "28.29",
+              "SCY": "25.59"
+            },
+            "boys": {
+              "LCM": "26.89",
+              "SCM": "25.89",
+              "SCY": "23.49"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "30.59",
+              "SCM": "29.49",
+              "SCY": "26.69"
+            },
+            "boys": {
+              "LCM": "28.19",
+              "SCM": "27.09",
+              "SCY": "24.59"
+            }
+          }
+        },
+        {
+          "key": "100FR",
+          "stroke": "Free",
+          "displayName": {
+            "LCM": "100 Free",
+            "SCM": "100 Free",
+            "SCY": "100 Free"
+          },
+          "distance": {
+            "LCM": 100,
+            "SCM": 100,
+            "SCY": 100
+          },
+          "standards": {
+            "girls": {
+              "LCM": "1:03.79",
+              "SCM": "1:01.69",
+              "SCY": "55.79"
+            },
+            "boys": {
+              "LCM": "58.99",
+              "SCM": "56.39",
+              "SCY": "51.09"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "1:06.69",
+              "SCM": "1:04.49",
+              "SCY": "58.29"
+            },
+            "boys": {
+              "LCM": "1:01.69",
+              "SCM": "58.99",
+              "SCY": "53.39"
+            }
+          }
+        },
+        {
+          "key": "200FR",
+          "stroke": "Free",
+          "displayName": {
+            "LCM": "200 Free",
+            "SCM": "200 Free",
+            "SCY": "200 Free"
+          },
+          "distance": {
+            "LCM": 200,
+            "SCM": 200,
+            "SCY": 200
+          },
+          "standards": {
+            "girls": {
+              "LCM": "2:17.79",
+              "SCM": "2:13.39",
+              "SCY": "2:00.69"
+            },
+            "boys": {
+              "LCM": "2:08.89",
+              "SCM": "2:03.69",
+              "SCY": "1:51.99"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "2:23.99",
+              "SCM": "2:19.49",
+              "SCY": "2:06.19"
+            },
+            "boys": {
+              "LCM": "2:14.69",
+              "SCM": "2:09.39",
+              "SCY": "1:57.09"
+            }
+          }
+        },
+        {
+          "key": "400FR",
+          "stroke": "Free",
+          "displayName": {
+            "LCM": "400 Free",
+            "SCM": "400 Free",
+            "SCY": "500 Free"
+          },
+          "distance": {
+            "LCM": 400,
+            "SCM": 400,
+            "SCY": 500
+          },
+          "standards": {
+            "girls": {
+              "LCM": "4:49.19",
+              "SCM": "4:43.39",
+              "SCY": "5:23.89"
+            },
+            "boys": {
+              "LCM": "4:33.79",
+              "SCM": "4:25.19",
+              "SCY": "5:03.09"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "5:02.39",
+              "SCM": "4:56.29",
+              "SCY": "5:38.59"
+            },
+            "boys": {
+              "LCM": "4:46.19",
+              "SCM": "4:37.29",
+              "SCY": "5:16.89"
+            }
+          }
+        },
+        {
+          "key": "800FR",
+          "stroke": "Free",
+          "displayName": {
+            "LCM": "800 Free",
+            "SCM": "800 Free",
+            "SCY": "1000 Free"
+          },
+          "distance": {
+            "LCM": 800,
+            "SCM": 800,
+            "SCY": 1000
+          },
+          "standards": {
+            "girls": {
+              "LCM": "10:01.49",
+              "SCM": "9:45.09",
+              "SCY": "11:08.69"
+            },
+            "boys": {
+              "LCM": "9:26.19",
+              "SCM": "9:08.59",
+              "SCY": "10:26.99"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "10:28.79",
+              "SCM": "10:11.69",
+              "SCY": "11:39.09"
+            },
+            "boys": {
+              "LCM": "9:51.99",
+              "SCM": "9:33.59",
+              "SCY": "10:55.49"
+            }
+          }
+        },
+        {
+          "key": "1500FR",
+          "stroke": "Free",
+          "displayName": {
+            "LCM": "1500 Free",
+            "SCM": "1500 Free",
+            "SCY": "1650 Free"
+          },
+          "distance": {
+            "LCM": 1500,
+            "SCM": 1500,
+            "SCY": 1650
+          },
+          "standards": {
+            "girls": {
+              "LCM": "19:13.69",
+              "SCM": "18:31.29",
+              "SCY": "18:37.99"
+            },
+            "boys": {
+              "LCM": "18:07.89",
+              "SCM": "17:28.79",
+              "SCY": "17:35.19"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "20:06.19",
+              "SCM": "19:21.79",
+              "SCY": "19:28.79"
+            },
+            "boys": {
+              "LCM": "18:57.39",
+              "SCM": "18:16.49",
+              "SCY": "18:23.09"
+            }
+          }
+        },
+        {
+          "key": "50BK",
+          "stroke": "Back",
+          "displayName": {
+            "LCM": "50 Back",
+            "SCM": "50 Back",
+            "SCY": "50 Back"
+          },
+          "distance": {
+            "LCM": 50,
+            "SCM": 50,
+            "SCY": 50
+          },
+          "standards": {
+            "girls": {
+              "LCM": "33.49",
+              "SCM": "31.49",
+              "SCY": "28.49"
+            },
+            "boys": {
+              "LCM": "31.09",
+              "SCM": "29.19",
+              "SCY": "26.49"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "34.99",
+              "SCM": "32.89",
+              "SCY": "29.79"
+            },
+            "boys": {
+              "LCM": "32.49",
+              "SCM": "30.59",
+              "SCY": "27.69"
+            }
+          }
+        },
+        {
+          "key": "100BK",
+          "stroke": "Back",
+          "displayName": {
+            "LCM": "100 Back",
+            "SCM": "100 Back",
+            "SCY": "100 Back"
+          },
+          "distance": {
+            "LCM": 100,
+            "SCM": 100,
+            "SCY": 100
+          },
+          "standards": {
+            "girls": {
+              "LCM": "1:10.49",
+              "SCM": "1:06.79",
+              "SCY": "1:00.49"
+            },
+            "boys": {
+              "LCM": "1:05.79",
+              "SCM": "1:01.89",
+              "SCY": "55.99"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "1:13.69",
+              "SCM": "1:09.79",
+              "SCY": "1:03.19"
+            },
+            "boys": {
+              "LCM": "1:08.69",
+              "SCM": "1:04.69",
+              "SCY": "58.59"
+            }
+          }
+        },
+        {
+          "key": "200BK",
+          "stroke": "Back",
+          "displayName": {
+            "LCM": "200 Back",
+            "SCM": "200 Back",
+            "SCY": "200 Back"
+          },
+          "distance": {
+            "LCM": 200,
+            "SCM": 200,
+            "SCY": 200
+          },
+          "standards": {
+            "girls": {
+              "LCM": "2:31.89",
+              "SCM": "2:24.49",
+              "SCY": "2:10.69"
+            },
+            "boys": {
+              "LCM": "2:22.79",
+              "SCM": "2:14.29",
+              "SCY": "2:01.59"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "2:38.79",
+              "SCM": "2:30.99",
+              "SCY": "2:16.69"
+            },
+            "boys": {
+              "LCM": "2:29.29",
+              "SCM": "2:20.39",
+              "SCY": "2:07.09"
+            }
+          }
+        },
+        {
+          "key": "50BR",
+          "stroke": "Breast",
+          "displayName": {
+            "LCM": "50 Breast",
+            "SCM": "50 Breast",
+            "SCY": "50 Breast"
+          },
+          "distance": {
+            "LCM": 50,
+            "SCM": 50,
+            "SCY": 50
+          },
+          "standards": {
+            "girls": {
+              "LCM": "37.59",
+              "SCM": "36.49",
+              "SCY": "33.09"
+            },
+            "boys": {
+              "LCM": "34.59",
+              "SCM": "33.49",
+              "SCY": "30.29"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "39.29",
+              "SCM": "38.19",
+              "SCY": "34.59"
+            },
+            "boys": {
+              "LCM": "36.19",
+              "SCM": "34.99",
+              "SCY": "31.69"
+            }
+          }
+        },
+        {
+          "key": "100BR",
+          "stroke": "Breast",
+          "displayName": {
+            "LCM": "100 Breast",
+            "SCM": "100 Breast",
+            "SCY": "100 Breast"
+          },
+          "distance": {
+            "LCM": 100,
+            "SCM": 100,
+            "SCY": 100
+          },
+          "standards": {
+            "girls": {
+              "LCM": "1:20.39",
+              "SCM": "1:16.99",
+              "SCY": "1:09.69"
+            },
+            "boys": {
+              "LCM": "1:13.69",
+              "SCM": "1:09.89",
+              "SCY": "1:03.29"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "1:24.09",
+              "SCM": "1:20.49",
+              "SCY": "1:12.89"
+            },
+            "boys": {
+              "LCM": "1:16.99",
+              "SCM": "1:13.09",
+              "SCY": "1:06.19"
+            }
+          }
+        },
+        {
+          "key": "200BR",
+          "stroke": "Breast",
+          "displayName": {
+            "LCM": "200 Breast",
+            "SCM": "200 Breast",
+            "SCY": "200 Breast"
+          },
+          "distance": {
+            "LCM": 200,
+            "SCM": 200,
+            "SCY": 200
+          },
+          "standards": {
+            "girls": {
+              "LCM": "2:53.09",
+              "SCM": "2:45.89",
+              "SCY": "2:30.09"
+            },
+            "boys": {
+              "LCM": "2:39.39",
+              "SCM": "2:31.79",
+              "SCY": "2:17.39"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "3:00.99",
+              "SCM": "2:53.39",
+              "SCY": "2:36.89"
+            },
+            "boys": {
+              "LCM": "2:46.59",
+              "SCM": "2:38.69",
+              "SCY": "2:23.59"
+            }
+          }
+        },
+        {
+          "key": "50FL",
+          "stroke": "Fly",
+          "displayName": {
+            "LCM": "50 Fly",
+            "SCM": "50 Fly",
+            "SCY": "50 Fly"
+          },
+          "distance": {
+            "LCM": 50,
+            "SCM": 50,
+            "SCY": 50
+          },
+          "standards": {
+            "girls": {
+              "LCM": "31.39",
+              "SCM": "31.09",
+              "SCY": "28.19"
+            },
+            "boys": {
+              "LCM": "29.29",
+              "SCM": "28.79",
+              "SCY": "26.09"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "32.79",
+              "SCM": "32.49",
+              "SCY": "29.39"
+            },
+            "boys": {
+              "LCM": "30.59",
+              "SCM": "30.09",
+              "SCY": "27.19"
+            }
+          }
+        },
+        {
+          "key": "100FL",
+          "stroke": "Fly",
+          "displayName": {
+            "LCM": "100 Fly",
+            "SCM": "100 Fly",
+            "SCY": "100 Fly"
+          },
+          "distance": {
+            "LCM": 100,
+            "SCM": 100,
+            "SCY": 100
+          },
+          "standards": {
+            "girls": {
+              "LCM": "1:08.59",
+              "SCM": "1:06.69",
+              "SCY": "1:00.39"
+            },
+            "boys": {
+              "LCM": "1:03.09",
+              "SCM": "1:01.19",
+              "SCY": "55.39"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "1:11.69",
+              "SCM": "1:09.69",
+              "SCY": "1:03.09"
+            },
+            "boys": {
+              "LCM": "1:05.99",
+              "SCM": "1:03.99",
+              "SCY": "57.89"
+            }
+          }
+        },
+        {
+          "key": "200FL",
+          "stroke": "Fly",
+          "displayName": {
+            "LCM": "200 Fly",
+            "SCM": "200 Fly",
+            "SCY": "200 Fly"
+          },
+          "distance": {
+            "LCM": 200,
+            "SCM": 200,
+            "SCY": 200
+          },
+          "standards": {
+            "girls": {
+              "LCM": "2:33.79",
+              "SCM": "2:28.59",
+              "SCY": "2:14.49"
+            },
+            "boys": {
+              "LCM": "2:21.19",
+              "SCM": "2:16.19",
+              "SCY": "2:03.19"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "2:40.79",
+              "SCM": "2:35.39",
+              "SCY": "2:20.59"
+            },
+            "boys": {
+              "LCM": "2:27.59",
+              "SCM": "2:22.39",
+              "SCY": "2:08.79"
+            }
+          }
+        },
+        {
+          "key": "200IM",
+          "stroke": "IM",
+          "displayName": {
+            "LCM": "200 IM",
+            "SCM": "200 IM",
+            "SCY": "200 IM"
+          },
+          "distance": {
+            "LCM": 200,
+            "SCM": 200,
+            "SCY": 200
+          },
+          "standards": {
+            "girls": {
+              "LCM": "2:34.89",
+              "SCM": "2:29.09",
+              "SCY": "2:14.99"
+            },
+            "boys": {
+              "LCM": "2:23.69",
+              "SCM": "2:17.09",
+              "SCY": "2:04.09"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "2:41.99",
+              "SCM": "2:35.89",
+              "SCY": "2:21.09"
+            },
+            "boys": {
+              "LCM": "2:30.19",
+              "SCM": "2:23.39",
+              "SCY": "2:09.79"
+            }
+          }
+        },
+        {
+          "key": "400IM",
+          "stroke": "IM",
+          "displayName": {
+            "LCM": "400 IM",
+            "SCM": "400 IM",
+            "SCY": "400 IM"
+          },
+          "distance": {
+            "LCM": 400,
+            "SCM": 400,
+            "SCY": 400
+          },
+          "standards": {
+            "girls": {
+              "LCM": "5:28.39",
+              "SCM": "5:17.59",
+              "SCY": "4:47.39"
+            },
+            "boys": {
+              "LCM": "5:06.99",
+              "SCM": "4:53.19",
+              "SCY": "4:25.39"
+            }
+          },
+          "aaStandards": {
+            "girls": {
+              "LCM": "5:43.39",
+              "SCM": "5:31.99",
+              "SCY": "5:00.49"
+            },
+            "boys": {
+              "LCM": "5:20.89",
+              "SCM": "5:06.49",
+              "SCY": "4:37.39"
+            }
+          }
+        }
       ]
     }
   },
   "wagzEventProgram": {
     "_note": "The actual WAGZ event program, narrower than the full standards table above. 13-14 swims 100s/200s of stroke, not 50s.",
-    "10U": ["50FR", "100FR", "200FR", "50BK", "100BK", "50BR", "100BR", "50FL", "100FL", "200IM"],
-    "11-12": ["50FR", "100FR", "200FR", "400FR", "50BK", "100BK", "200BK", "50BR", "100BR", "200BR", "50FL", "100FL", "200FL", "200IM", "400IM"],
-    "13-14": ["50FR", "100FR", "200FR", "400FR", "800FR", "1500FR", "100BK", "200BK", "100BR", "200BR", "100FL", "200FL", "200IM", "400IM"]
+    "10U": [
+      "50FR",
+      "100FR",
+      "200FR",
+      "50BK",
+      "100BK",
+      "50BR",
+      "100BR",
+      "50FL",
+      "100FL",
+      "200IM"
+    ],
+    "11-12": [
+      "50FR",
+      "100FR",
+      "200FR",
+      "400FR",
+      "50BK",
+      "100BK",
+      "200BK",
+      "50BR",
+      "100BR",
+      "200BR",
+      "50FL",
+      "100FL",
+      "200FL",
+      "200IM",
+      "400IM"
+    ],
+    "13-14": [
+      "50FR",
+      "100FR",
+      "200FR",
+      "400FR",
+      "800FR",
+      "1500FR",
+      "100BK",
+      "200BK",
+      "100BR",
+      "200BR",
+      "100FL",
+      "200FL",
+      "200IM",
+      "400IM"
+    ]
   }
 }
